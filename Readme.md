@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Игорь Насибов](https://up.htmlacademy.ru/javascript/19/user/1000573).
-* Наставник: `Неизвестно`.
+* Наставник: Алексей Балесный.
 
 ---
 
