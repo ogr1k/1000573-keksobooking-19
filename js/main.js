@@ -19,7 +19,7 @@ var LOCATION_Y_MAX = 630;
 var LOCATION_Y_MIN = 130;
 var BUTTON_MAP_PIN_WIDTH = 50;
 var BUTTON_MAP_PIN_HEIGHT = 70;
-var FIRST_ELEMENT = 0;
+
 
 var mapPinElement = document.querySelector('.map');
 mapPinElement.classList.remove('map--faded');
@@ -33,8 +33,7 @@ var getRandomInteger = function (min, max) {
 
 
 var getRandomArrayLength = function (items) {
-  var randomLengthArray = items.slice(getRandomInteger(FIRST_ELEMENT, items));
-  return randomLengthArray;
+  return items.slice(getRandomInteger(0, items.length));
 };
 
 
@@ -54,15 +53,15 @@ var createAdsList = function (objectCount) {
       },
 
       offer: {
-        title: getRandomElement(FIRST_ELEMENT, ADS_TITLES),
+        title: getRandomElement(0, ADS_TITLES),
         address: 'randomLocationX' + 'randomLocationY',
         price: getRandomInteger(OFFER_PRICE_MIN, OFFER_PRICE_MAX),
-        type: getRandomElement(FIRST_ELEMENT, OFFERS_TYPES),
+        type: getRandomElement(0, OFFERS_TYPES),
         rooms: getRandomInteger(ROOMS_QUANTITY_MIN, ROOMS_QUANTITY_MAX),
-        checkin: getRandomElement(FIRST_ELEMENT, CHECKINS_TIMES),
-        checkout: getRandomElement(FIRST_ELEMENT, CHECKOUTS_TIMES),
+        checkin: getRandomElement(0, CHECKINS_TIMES),
+        checkout: getRandomElement(0, CHECKOUTS_TIMES),
         features: getRandomArrayLength(FEATURES),
-        description: getRandomElement(FIRST_ELEMENT, OFFERS_DESCIPTIONS),
+        description: getRandomElement(0, OFFERS_DESCIPTIONS),
         photos: getRandomArrayLength(OFFERS_PHOTOS)
       },
       location: {
