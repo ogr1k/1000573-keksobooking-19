@@ -37,8 +37,8 @@ var getRandomArrayLength = function (items) {
 };
 
 
-var getRandomElement = function (minElement, elements) {
-  return elements[getRandomInteger(minElement, elements.length)];
+var getRandomElement = function (elements) {
+  return elements[getRandomInteger(0, elements.length)];
 };
 
 
@@ -53,15 +53,15 @@ var createAdsList = function (objectCount) {
       },
 
       offer: {
-        title: getRandomElement(0, ADS_TITLES),
-        address: 'randomLocationX' + 'randomLocationY',
+        title: getRandomElement(ADS_TITLES),
+        address: randomLocationX  + ', ' +  randomLocationY,
         price: getRandomInteger(OFFER_PRICE_MIN, OFFER_PRICE_MAX),
-        type: getRandomElement(0, OFFERS_TYPES),
+        type: getRandomElement(OFFERS_TYPES),
         rooms: getRandomInteger(ROOMS_QUANTITY_MIN, ROOMS_QUANTITY_MAX),
-        checkin: getRandomElement(0, CHECKINS_TIMES),
-        checkout: getRandomElement(0, CHECKOUTS_TIMES),
+        checkin: getRandomElement(CHECKINS_TIMES),
+        checkout: getRandomElement(CHECKOUTS_TIMES),
         features: getRandomArrayLength(FEATURES),
-        description: getRandomElement(0, OFFERS_DESCIPTIONS),
+        description: getRandomElement(OFFERS_DESCIPTIONS),
         photos: getRandomArrayLength(OFFERS_PHOTOS)
       },
       location: {
