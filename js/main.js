@@ -131,17 +131,16 @@ var getInfoAdElement = function (element) {
     infoElement.querySelector('.popup__description').hidden = true;
   }
   infoElement.querySelector('.popup__description').textContent = element.offer.description;
-   if (element.offer.photos.length === 0) {
+  if (element.offer.photos.length === 0) {
     infoElement.querySelector('.popup__photo').hidden = true;
   }
-    var addPhoto = infoElement.querySelector('.popup__photo');
-    for (var i = 0; i < element.offer.photos.length; i++) {
-      var newPhoto = addPhoto.cloneNode(true);
-      addPhoto.src = element.offer.photos[i];
-      addPhoto.after(addPhoto);
-    }
+  var addPhoto = infoElement.querySelector('.popup__photo');
+  for (var i = 0; i < element.offer.photos.length; i++) {
+    addPhoto.src = element.offer.photos[i];
+    addPhoto.after(addPhoto);
+  }
 
   return infoElement;
-  }
+};
 
 document.querySelector('.map__filters-container').before(getInfoAdElement(ads[0]));
