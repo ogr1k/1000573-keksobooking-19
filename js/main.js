@@ -7,6 +7,8 @@ var OFFER_PRICE_MIN = 1;
 var OFFERS_TYPES = ['palace', 'flat', 'house', 'bungalo'];
 var ROOMS_QUANTITY_MIN = 1;
 var ROOMS_QUANTITY_MAX = 5;
+var GUESTS_QUANTITY_MIN = 1;
+var GUESTS_QUANTITY_MAX = 7;
 var CHECKINS_TIMES = ['12:00', '13:00', '14:00'];
 var CHECKOUTS_TIMES = ['12:00', '13:00', '14:00'];
 var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
@@ -38,7 +40,7 @@ var getRandomArrayLength = function (items) {
 
 
 var getRandomElement = function (elements) {
-  return elements[getRandomInteger(0, elements.length)];
+  return elements[getRandomInteger(0, elements.length - 1)];
 };
 
 
@@ -54,10 +56,11 @@ var createAdsList = function (objectCount) {
 
       offer: {
         title: getRandomElement(ADS_TITLES),
-        address: randomLocationX  + ', ' +  randomLocationY,
+        address: randomLocationX + ' , ' + randomLocationY,
         price: getRandomInteger(OFFER_PRICE_MIN, OFFER_PRICE_MAX),
         type: getRandomElement(OFFERS_TYPES),
         rooms: getRandomInteger(ROOMS_QUANTITY_MIN, ROOMS_QUANTITY_MAX),
+        guests: getRandomInteger(GUESTS_QUANTITY_MIN, GUESTS_QUANTITY_MAX),
         checkin: getRandomElement(CHECKINS_TIMES),
         checkout: getRandomElement(CHECKOUTS_TIMES),
         features: getRandomArrayLength(FEATURES),
@@ -95,3 +98,50 @@ var createAdPinsFragment = function () {
 };
 
 createAdPinsFragment();
+
+var getInfoAdElement = function (element) {
+  var infoTemplateElement = document.querySelector('#card').content;
+  var infoElement = infoTemplateElement.cloneNode(true);
+  infoElement.querySelector('.popup__avatar').src = element.author.avatar;
+  infoElement.querySelector('.popup__title').textContent = element.offer.title;
+  infoElement.querySelector('.popup__text--address').textContent = element.offer.address;
+  infoElement.querySelector('.popup__text--price').textContent = element.offer.price + ' ₽/ночь';
+  var offerTypeTransaltion = element.offer.type;
+  if (offerTypeTransaltion === 'palace') {
+    offerTypeTransaltion = 'Дворец';
+  }
+  if (offerTypeTransaltion === 'flat') {
+    offerTypeTransaltion = 'квартира';
+  }
+  if (offerTypeTransaltion === 'house') {
+    offerTypeTransaltion = 'дом';
+  }
+  if (offerTypeTransaltion === 'bungalo') {
+    offerTypeTransaltion = 'бунгало';
+  }
+  infoElement.querySelector('.popup__type').textContent = offerTypeTransaltion;
+  infoElement.querySelector('.popup__text--capacity').textContent = element.offer.rooms + ' комнаты для ' + element.offer.guests + ' гостей';
+  infoElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + element.offer.checkin + ' , выезд до ' + element.offer.checkout;
+
+  if (element.offer.features.length === 0) {
+    infoElement.querySelector('.popup__features').hidden = true;
+  }
+  infoElement.querySelector('.popup__features').textContent = element.offer.features;
+  if (element.offer.description.length === 0) {
+    infoElement.querySelector('.popup__description').hidden = true;
+  }
+  infoElement.querySelector('.popup__description').textContent = element.offer.description;
+   if (element.offer.photos.length === 0) {
+    infoElement.querySelector('.popup__photo').hidden = true;
+  }
+    var addPhoto = infoElement.querySelector('.popup__photo');
+    for (var i = 0; i < element.offer.photos.length; i++) {
+      var newPhoto = addPhoto.cloneNode(true);
+      addPhoto.src = element.offer.photos[i];
+      addPhoto.after(addPhoto);
+    }
+
+  return infoElement;
+  }
+
+document.querySelector('.map__filters-container').before(getInfoAdElement(ads[0]));
