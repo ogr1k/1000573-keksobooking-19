@@ -5,14 +5,19 @@ var ADS_TITLES = ['Лучшее в мире жилье', 'Бюджетный в�
 var OFFER_PRICE_MAX = 1000000;
 var OFFER_PRICE_MIN = 1;
 var OFFERS_TYPES = ['palace', 'flat', 'house', 'bungalo'];
+var OFFERS_TYPES_TRANSLATION = {'palace': 'Дворец',
+  'flat': 'квартира',
+  'house': 'дом',
+  'bungalo': 'бунгало'};
 var ROOMS_QUANTITY_MIN = 1;
 var ROOMS_QUANTITY_MAX = 5;
+var GUESTS_QUANTITY_MIN = 0;
+var GUESTS_QUANTITY_MAX = 7;
 var CHECKINS_TIMES = ['12:00', '13:00', '14:00'];
 var CHECKOUTS_TIMES = ['12:00', '13:00', '14:00'];
 var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var OFFERS_DESCIPTIONS = ['отличные аппартаменты!', 'Без домашних животных!'];
 var OFFERS_PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
-
 var LOCATION_X_MAX = 1200;
 var LOCATION_X_MIN = 0;
 var LOCATION_Y_MAX = 630;
@@ -38,7 +43,7 @@ var getRandomArrayLength = function (items) {
 
 
 var getRandomElement = function (elements) {
-  return elements[getRandomInteger(0, elements.length)];
+  return elements[getRandomInteger(0, elements.length - 1)];
 };
 
 
@@ -54,10 +59,11 @@ var createAdsList = function (objectCount) {
 
       offer: {
         title: getRandomElement(ADS_TITLES),
-        address: randomLocationX  + ', ' +  randomLocationY,
+        address: randomLocationX + ' , ' + randomLocationY,
         price: getRandomInteger(OFFER_PRICE_MIN, OFFER_PRICE_MAX),
         type: getRandomElement(OFFERS_TYPES),
         rooms: getRandomInteger(ROOMS_QUANTITY_MIN, ROOMS_QUANTITY_MAX),
+        guests: getRandomInteger(GUESTS_QUANTITY_MIN, GUESTS_QUANTITY_MAX),
         checkin: getRandomElement(CHECKINS_TIMES),
         checkout: getRandomElement(CHECKOUTS_TIMES),
         features: getRandomArrayLength(FEATURES),
@@ -95,3 +101,45 @@ var createAdPinsFragment = function () {
 };
 
 createAdPinsFragment();
+
+var infoTemplateElement = document.querySelector('#card').content;
+var infoElement = infoTemplateElement.cloneNode(true);
+
+var getInfoAdElement = function (element) {
+  infoElement.querySelector('.popup__avatar').src = element.author.avatar;
+  infoElement.querySelector('.popup__title').textContent = element.offer.title;
+  infoElement.querySelector('.popup__text--address').textContent = element.offer.address;
+  infoElement.querySelector('.popup__text--price').textContent = element.offer.price + ' Р/ночь';
+  infoElement.querySelector('.popup__type').textContent = OFFERS_TYPES_TRANSLATION[element.offer.type];
+  infoElement.querySelector('.popup__text--capacity').textContent = element.offer.rooms + ' комнаты для ' + element.offer.guests + ' гостей';
+  infoElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + element.offer.checkin + ' , выезд до ' + element.offer.checkout;
+  for (var i = 0; i < (FEATURES.length); i++) {
+    infoElement.querySelector('.popup__features').children[i].style.cssText = 'display: none';
+  }
+
+  for (var j = 0; j < element.offer.features.length; j++) {
+    infoElement.querySelector('.popup__features').children[j].classList.add('popup__feature--' + element.offer.features[j]);
+    infoElement.querySelector('.popup__features').children[j].style.cssText = 'display: inline-block';
+  }
+
+  if (element.offer.description.length === 0) {
+    infoElement.querySelector('.popup__description').hidden = true;
+  }
+  infoElement.querySelector('.popup__description').textContent = element.offer.description;
+  if (element.offer.photos.length === 0) {
+    infoElement.querySelector('.popup__photos').style.cssText = 'display: none';
+  } else {
+    var photoELement = infoElement.querySelector('.popup__photo');
+    photoELement.src = element.offer.photos[0];
+    for (var k = 1; k < element.offer.photos.length; k++) {
+      var newPhoto = photoELement.cloneNode(true);
+      newPhoto.src = element.offer.photos[k];
+      photoELement.after(newPhoto);
+    }
+  }
+
+
+  return infoElement;
+};
+
+document.querySelector('.map__filters-container').before(getInfoAdElement(ads[0]));
