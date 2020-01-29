@@ -5,16 +5,19 @@ var ADS_TITLES = ['Лучшее в мире жилье', 'Бюджетный в�
 var OFFER_PRICE_MAX = 1000000;
 var OFFER_PRICE_MIN = 1;
 var OFFERS_TYPES = ['palace', 'flat', 'house', 'bungalo'];
+var OFFERS_TYPES_TRANSLATION = {'palace': 'Дворец',
+  'flat': 'квартира',
+  'house': 'дом',
+  'bungalo': 'бунгало'};
 var ROOMS_QUANTITY_MIN = 1;
 var ROOMS_QUANTITY_MAX = 5;
-var GUESTS_QUANTITY_MIN = 1;
+var GUESTS_QUANTITY_MIN = 0;
 var GUESTS_QUANTITY_MAX = 7;
 var CHECKINS_TIMES = ['12:00', '13:00', '14:00'];
 var CHECKOUTS_TIMES = ['12:00', '13:00', '14:00'];
 var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var OFFERS_DESCIPTIONS = ['отличные аппартаменты!', 'Без домашних животных!'];
 var OFFERS_PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
-
 var LOCATION_X_MAX = 1200;
 var LOCATION_X_MIN = 0;
 var LOCATION_Y_MAX = 630;
@@ -99,46 +102,44 @@ var createAdPinsFragment = function () {
 
 createAdPinsFragment();
 
+var infoTemplateElement = document.querySelector('#card').content;
+var infoElement = infoTemplateElement.cloneNode(true);
+
 var getInfoAdElement = function (element) {
-  var infoTemplateElement = document.querySelector('#card').content;
-  var infoElement = infoTemplateElement.cloneNode(true);
   infoElement.querySelector('.popup__avatar').src = element.author.avatar;
   infoElement.querySelector('.popup__title').textContent = element.offer.title;
   infoElement.querySelector('.popup__text--address').textContent = element.offer.address;
-  infoElement.querySelector('.popup__text--price').textContent = element.offer.price + ' ₽/ночь';
-  var offerTypeTransaltion = element.offer.type;
-  if (offerTypeTransaltion === 'palace') {
-    offerTypeTransaltion = 'Дворец';
-  }
-  if (offerTypeTransaltion === 'flat') {
-    offerTypeTransaltion = 'квартира';
-  }
-  if (offerTypeTransaltion === 'house') {
-    offerTypeTransaltion = 'дом';
-  }
-  if (offerTypeTransaltion === 'bungalo') {
-    offerTypeTransaltion = 'бунгало';
-  }
-  infoElement.querySelector('.popup__type').textContent = offerTypeTransaltion;
+  infoElement.querySelector('.popup__text--price').textContent = element.offer.price + ' Р/ночь';
+  var getTypeTranslation = function (type) {
+    infoElement.querySelector('.popup__type').textContent = OFFERS_TYPES_TRANSLATION[type];
+  };
+  getTypeTranslation(element.offer.type);
   infoElement.querySelector('.popup__text--capacity').textContent = element.offer.rooms + ' комнаты для ' + element.offer.guests + ' гостей';
   infoElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + element.offer.checkin + ' , выезд до ' + element.offer.checkout;
 
   if (element.offer.features.length === 0) {
     infoElement.querySelector('.popup__features').hidden = true;
+  } else {
+    for (var i = 0; i < element.offer.features.length; i++) {
+      infoElement.querySelector('.popup__features').children[i].classList.add('popup__feature--' + element.offer.features[i]);
+    }
   }
-  infoElement.querySelector('.popup__features').textContent = element.offer.features;
   if (element.offer.description.length === 0) {
     infoElement.querySelector('.popup__description').hidden = true;
   }
   infoElement.querySelector('.popup__description').textContent = element.offer.description;
   if (element.offer.photos.length === 0) {
-    infoElement.querySelector('.popup__photo').hidden = true;
+    infoElement.querySelector('.popup__photos').hidden = true;
+  } else {
+    var addPhoto = infoElement.querySelector('.popup__photo');
+    for (var j = 1; j < element.offer.photos.length; j++) {
+      addPhoto.src = element.offer.photos[0];
+      var newPhoto = addPhoto.cloneNode(true);
+      newPhoto.src = element.offer.photos[j];
+      addPhoto.after(newPhoto);
+    }
   }
-  var addPhoto = infoElement.querySelector('.popup__photo');
-  for (var i = 0; i < element.offer.photos.length; i++) {
-    addPhoto.src = element.offer.photos[i];
-    addPhoto.after(addPhoto);
-  }
+
 
   return infoElement;
 };
