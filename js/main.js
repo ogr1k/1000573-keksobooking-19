@@ -113,15 +113,15 @@ var getInfoAdElement = function (element) {
   infoElement.querySelector('.popup__type').textContent = OFFERS_TYPES_TRANSLATION[element.offer.type];
   infoElement.querySelector('.popup__text--capacity').textContent = element.offer.rooms + ' комнаты для ' + element.offer.guests + ' гостей';
   infoElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + element.offer.checkin + ' , выезд до ' + element.offer.checkout;
-  if (element.offer.features.length === 0) {
-    infoElement.querySelector('.popup__features').hidden = true;
-  } else {
-    if (FEATURES.length !== element.offer.features.length) {
-      for (var i = (FEATURES.length - 1); i >= element.offer.features.length; i--) {
-        infoElement.querySelector('.popup__features').children[i].remove();
-      }
-    }
+  for (var i = 0; i < (FEATURES.length); i++) {
+    infoElement.querySelector('.popup__features').children[i].style.cssText = 'display: none';
   }
+
+  for (var j = 0; j < element.offer.features.length; j++) {
+    infoElement.querySelector('.popup__features').children[j].classList.add('popup__feature--' + element.offer.features[j]);
+    infoElement.querySelector('.popup__features').children[j].style.cssText = 'display: inline-block';
+  }
+
   if (element.offer.description.length === 0) {
     infoElement.querySelector('.popup__description').hidden = true;
   }
@@ -131,9 +131,9 @@ var getInfoAdElement = function (element) {
   } else {
     var photoELement = infoElement.querySelector('.popup__photo');
     photoELement.src = element.offer.photos[0];
-    for (var j = 1; j < element.offer.photos.length; j++) {
+    for (var k = 1; k < element.offer.photos.length; k++) {
       var newPhoto = photoELement.cloneNode(true);
-      newPhoto.src = element.offer.photos[j];
+      newPhoto.src = element.offer.photos[k];
       photoELement.after(newPhoto);
     }
   }
