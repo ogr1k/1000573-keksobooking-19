@@ -110,18 +110,16 @@ var getInfoAdElement = function (element) {
   infoElement.querySelector('.popup__title').textContent = element.offer.title;
   infoElement.querySelector('.popup__text--address').textContent = element.offer.address;
   infoElement.querySelector('.popup__text--price').textContent = element.offer.price + ' Р/ночь';
-  var getTypeTranslation = function (type) {
-    infoElement.querySelector('.popup__type').textContent = OFFERS_TYPES_TRANSLATION[type];
-  };
-  getTypeTranslation(element.offer.type);
+  infoElement.querySelector('.popup__type').textContent = OFFERS_TYPES_TRANSLATION[element.offer.type];
   infoElement.querySelector('.popup__text--capacity').textContent = element.offer.rooms + ' комнаты для ' + element.offer.guests + ' гостей';
   infoElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + element.offer.checkin + ' , выезд до ' + element.offer.checkout;
-
   if (element.offer.features.length === 0) {
     infoElement.querySelector('.popup__features').hidden = true;
   } else {
-    for (var i = 0; i < element.offer.features.length; i++) {
-      infoElement.querySelector('.popup__features').children[i].classList.add('popup__feature--' + element.offer.features[i]);
+    if (FEATURES.length !== element.offer.features.length) {
+      for (var i = (FEATURES.length - 1); i >= element.offer.features.length; i--) {
+        infoElement.querySelector('.popup__features').children[i].remove();
+      }
     }
   }
   if (element.offer.description.length === 0) {
@@ -129,14 +127,14 @@ var getInfoAdElement = function (element) {
   }
   infoElement.querySelector('.popup__description').textContent = element.offer.description;
   if (element.offer.photos.length === 0) {
-    infoElement.querySelector('.popup__photos').hidden = true;
+    infoElement.querySelector('.popup__photos').style.cssText = 'display: none';
   } else {
-    var addPhoto = infoElement.querySelector('.popup__photo');
+    var photoELement = infoElement.querySelector('.popup__photo');
+    photoELement.src = element.offer.photos[0];
     for (var j = 1; j < element.offer.photos.length; j++) {
-      addPhoto.src = element.offer.photos[0];
-      var newPhoto = addPhoto.cloneNode(true);
+      var newPhoto = photoELement.cloneNode(true);
       newPhoto.src = element.offer.photos[j];
-      addPhoto.after(newPhoto);
+      photoELement.after(newPhoto);
     }
   }
 
