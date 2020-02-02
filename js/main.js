@@ -189,36 +189,35 @@ mainMapPinElement.addEventListener('keydown', function (evt) {
 
 });
 
-var roomCapacityElement = document.querySelector('#capacity');
 var roomNumberElement = document.querySelector('#room_number');
 
-roomNumberElement.addEventListener('change', function() {
-  if (document.querySelector('#room_number').value = '1') {
-   document.querySelector('#optionValueOneGuest').removeAttribute('disabled');
-   document.querySelector('#optionValueZeroGuest').setAttribute('disabled', 'disabled');
-   document.querySelector('#optionValueThreeGuests').setAttribute('disabled', 'disabled');
-   document.querySelector('#optionValueTwoGuests').setAttribute('disabled', 'disabled');
-};
+roomNumberElement.addEventListener('change', function () {
+  if (document.querySelector('#room_number').value === '1') {
+    document.querySelector('#optionValueOneGuest').removeAttribute('disabled');
+    document.querySelector('#optionValueZeroGuest').setAttribute('disabled', 'disabled');
+    document.querySelector('#optionValueThreeGuests').setAttribute('disabled', 'disabled');
+    document.querySelector('#optionValueTwoGuests').setAttribute('disabled', 'disabled');
+  }
 
-   if (document.querySelector('#room_number').value = '2') {
-   document.querySelector('#optionValueZeroGuest').setAttribute('disabled', 'disabled');
-   document.querySelector('#optionValueThreeGuests').setAttribute('disabled', 'disabled');
-   document.querySelector('#optionValueTwoGuests').removeAttribute('disabled');
-   document.querySelector('#optionValueOneGuest').removeAttribute('disabled');
-};
+  if (document.querySelector('#room_number').value === '2') {
+    document.querySelector('#optionValueZeroGuest').setAttribute('disabled', 'disabled');
+    document.querySelector('#optionValueThreeGuests').setAttribute('disabled', 'disabled');
+    document.querySelector('#optionValueTwoGuests').removeAttribute('disabled');
+    document.querySelector('#optionValueOneGuest').removeAttribute('disabled');
+  }
 
-  if (document.querySelector('#room_number').value = '3') {
-   document.querySelector('#optionValueZeroGuest').setAttribute('disabled', 'disabled');
-   document.querySelector('#optionValueThreeGuests').removeAttribute('disabled');
-   document.querySelector('#optionValueTwoGuests').removeAttribute('disabled');
-   document.querySelector('#optionValueOneGuest').removeAttribute('disabled');
-};
+  if (document.querySelector('#room_number').value === '3') {
+    document.querySelector('#optionValueZeroGuest').setAttribute('disabled', 'disabled');
+    document.querySelector('#optionValueThreeGuests').removeAttribute('disabled');
+    document.querySelector('#optionValueTwoGuests').removeAttribute('disabled');
+    document.querySelector('#optionValueOneGuest').removeAttribute('disabled');
+  }
 
-if (document.querySelector('#room_number').value = '100') {
-   document.querySelector('#optionValueZeroGuest').removeAttribute('disabled');
-   document.querySelector('#optionValueThreeGuests').setAttribute('disabled', 'disabled');
-   document.querySelector('#optionValueTwoGuests').setAttribute('disabled', 'disabled');
-   document.querySelector('#optionValueOneGuest').setAttribute('disabled', 'disabled');
-}
+  if (document.querySelector('#room_number').value === '100') {
+    document.querySelector('#optionValueZeroGuest').removeAttribute('disabled');
+    document.querySelector('#optionValueThreeGuests').setAttribute('disabled', 'disabled');
+    document.querySelector('#optionValueTwoGuests').setAttribute('disabled', 'disabled');
+    document.querySelector('#optionValueOneGuest').setAttribute('disabled', 'disabled');
+  }
 }
 );
