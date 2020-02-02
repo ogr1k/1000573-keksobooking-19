@@ -5,10 +5,10 @@ var ADS_TITLES = ['Лучшее в мире жилье', 'Бюджетный в�
 var OFFER_PRICE_MAX = 1000000;
 var OFFER_PRICE_MIN = 1;
 var OFFERS_TYPES = ['palace', 'flat', 'house', 'bungalo'];
-var OFFERS_TYPES_TRANSLATION = {'palace': 'Дворец',
+/* var OFFERS_TYPES_TRANSLATION = {'palace': 'Дворец',
   'flat': 'квартира',
   'house': 'дом',
-  'bungalo': 'бунгало'};
+  'bungalo': 'бунгало'}; */
 var ROOMS_QUANTITY_MIN = 1;
 var ROOMS_QUANTITY_MAX = 5;
 var GUESTS_QUANTITY_MIN = 0;
@@ -25,9 +25,14 @@ var LOCATION_Y_MIN = 130;
 var BUTTON_MAP_PIN_WIDTH = 50;
 var BUTTON_MAP_PIN_HEIGHT = 70;
 
+var ENTER_KEY = 'Enter';
+
+var DEFAULT_X_POSITION_MAIN_PIN = 570;
+var DEFAULT_Y_POSITION_MAIN_PIN = 375;
+var BUTTON_MAIN_MAP_PIN_WIDTH_HEIGHT = 65;
+var MAIN_MAP_PIN_POINTER_HEIGHT = 19;
 
 var mapPinElement = document.querySelector('.map');
-mapPinElement.classList.remove('map--faded');
 var adTemplateElement = document.querySelector('#pin').content;
 var mapPinsElement = document.querySelector('.map__pins');
 
@@ -100,9 +105,7 @@ var createAdPinsFragment = function () {
   mapPinsElement.appendChild(fragment);
 };
 
-createAdPinsFragment();
-
-var infoTemplateElement = document.querySelector('#card').content;
+/* var infoTemplateElement = document.querySelector('#card').content;
 var infoElement = infoTemplateElement.cloneNode(true);
 
 var getInfoAdElement = function (element) {
@@ -142,4 +145,67 @@ var getInfoAdElement = function (element) {
   return infoElement;
 };
 
-document.querySelector('.map__filters-container').before(getInfoAdElement(ads[0]));
+document.querySelector('.map__filters-container').before(getInfoAdElement(ads[0])); */
+
+var formElement = document.querySelector('.ad-form');
+var fieldsetElements = formElement.querySelectorAll('fieldset');
+
+var setDisableAttribute = function () {
+  for (var i = 0; i < fieldsetElements.length; i++) {
+    fieldsetElements[i].setAttribute('disabled', 'disabled');
+  }
+};
+
+setDisableAttribute();
+var adressInputElement = document.querySelector('#address');
+
+adressInputElement.value = Math.round((DEFAULT_X_POSITION_MAIN_PIN + (BUTTON_MAIN_MAP_PIN_WIDTH_HEIGHT / 2))) + ', ' + Math.round((DEFAULT_Y_POSITION_MAIN_PIN + (BUTTON_MAIN_MAP_PIN_WIDTH_HEIGHT / 2)));
+
+
+var formMapElement = document.querySelector('.map__filters');
+formMapElement.querySelector('fieldset').setAttribute('disabled', 'disabled');
+var mainMapPinElement = document.querySelector('.map__pin--main');
+
+
+var setActiveCondition = function () {
+  createAdPinsFragment();
+  mapPinElement.classList.remove('map--faded');
+  for (var i = 0; i < fieldsetElements.length; i++) {
+    fieldsetElements[i].removeAttribute('disabled');
+    adressInputElement.value = Math.round((DEFAULT_X_POSITION_MAIN_PIN + (BUTTON_MAIN_MAP_PIN_WIDTH_HEIGHT / 2))) + ', ' + Math.round((DEFAULT_Y_POSITION_MAIN_PIN + BUTTON_MAIN_MAP_PIN_WIDTH_HEIGHT + MAIN_MAP_PIN_POINTER_HEIGHT));
+  }
+  formMapElement.querySelector('fieldset').removeAttribute('disabled');
+};
+
+mainMapPinElement.addEventListener('mousedown', function () {
+  setActiveCondition();
+}
+);
+
+mainMapPinElement.addEventListener('keydown', function (evt) {
+  if (evt.key === ENTER_KEY) {
+    setActiveCondition();
+  }
+
+});
+
+var roomCapacityElement = document.querySelector('#capacity');
+/* var roomNumberElement = document.querySelector('#room_number'); */
+
+roomCapacityElement.innerHTML = '';
+
+if (document.querySelector('#room_number').select.value = '1') {
+  var createOption = document.createElement('option');
+  createOption.value = '1';
+  roomCapacityElement.appendChild(createOption);
+}
+
+
+if (if (document.querySelector('#room_number').select.value = '2') {
+  var createOption = document.createElement('option');
+  createOption.value = '1';
+  roomCapacityElement.appendChild(createOption);
+
+  createOption.value = '2';
+  roomCapacityElement.appendChild(createOption);
+}) // И так далее, но у меня не получается спросить value у Selecta выбора комнат
