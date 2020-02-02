@@ -190,13 +190,19 @@ mainMapPinElement.addEventListener('keydown', function (evt) {
 });
 
 var roomNumberElement = document.querySelector('#room_number');
+var setGeustsOptionForOneRoom = function () {
+  document.querySelector('#optionValueOneGuest').removeAttribute('disabled');
+  document.querySelector('#optionValueZeroGuest').setAttribute('disabled', 'disabled');
+  document.querySelector('#optionValueThreeGuests').setAttribute('disabled', 'disabled');
+  document.querySelector('#optionValueTwoGuests').setAttribute('disabled', 'disabled');
+};
+
+setGeustsOptionForOneRoom();
+
 
 roomNumberElement.addEventListener('change', function () {
   if (document.querySelector('#room_number').value === '1') {
-    document.querySelector('#optionValueOneGuest').removeAttribute('disabled');
-    document.querySelector('#optionValueZeroGuest').setAttribute('disabled', 'disabled');
-    document.querySelector('#optionValueThreeGuests').setAttribute('disabled', 'disabled');
-    document.querySelector('#optionValueTwoGuests').setAttribute('disabled', 'disabled');
+    setGeustsOptionForOneRoom();
   }
 
   if (document.querySelector('#room_number').value === '2') {
