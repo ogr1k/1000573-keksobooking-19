@@ -190,22 +190,35 @@ mainMapPinElement.addEventListener('keydown', function (evt) {
 });
 
 var roomCapacityElement = document.querySelector('#capacity');
-/* var roomNumberElement = document.querySelector('#room_number'); */
+var roomNumberElement = document.querySelector('#room_number');
 
-roomCapacityElement.innerHTML = '';
+roomNumberElement.addEventListener('change', function() {
+  if (document.querySelector('#room_number').value = '1') {
+   document.querySelector('#optionValueOneGuest').removeAttribute('disabled');
+   document.querySelector('#optionValueZeroGuest').setAttribute('disabled', 'disabled');
+   document.querySelector('#optionValueThreeGuests').setAttribute('disabled', 'disabled');
+   document.querySelector('#optionValueTwoGuests').setAttribute('disabled', 'disabled');
+};
 
-if (document.querySelector('#room_number').select.value = '1') {
-  var createOption = document.createElement('option');
-  createOption.value = '1';
-  roomCapacityElement.appendChild(createOption);
+   if (document.querySelector('#room_number').value = '2') {
+   document.querySelector('#optionValueZeroGuest').setAttribute('disabled', 'disabled');
+   document.querySelector('#optionValueThreeGuests').setAttribute('disabled', 'disabled');
+   document.querySelector('#optionValueTwoGuests').removeAttribute('disabled');
+   document.querySelector('#optionValueOneGuest').removeAttribute('disabled');
+};
+
+  if (document.querySelector('#room_number').value = '3') {
+   document.querySelector('#optionValueZeroGuest').setAttribute('disabled', 'disabled');
+   document.querySelector('#optionValueThreeGuests').removeAttribute('disabled');
+   document.querySelector('#optionValueTwoGuests').removeAttribute('disabled');
+   document.querySelector('#optionValueOneGuest').removeAttribute('disabled');
+};
+
+if (document.querySelector('#room_number').value = '100') {
+   document.querySelector('#optionValueZeroGuest').removeAttribute('disabled');
+   document.querySelector('#optionValueThreeGuests').setAttribute('disabled', 'disabled');
+   document.querySelector('#optionValueTwoGuests').setAttribute('disabled', 'disabled');
+   document.querySelector('#optionValueOneGuest').setAttribute('disabled', 'disabled');
 }
-
-
-if (if (document.querySelector('#room_number').select.value = '2') {
-  var createOption = document.createElement('option');
-  createOption.value = '1';
-  roomCapacityElement.appendChild(createOption);
-
-  createOption.value = '2';
-  roomCapacityElement.appendChild(createOption);
-}) // И так далее, но у меня не получается спросить value у Selecta выбора комнат
+}
+);
