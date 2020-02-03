@@ -34,10 +34,12 @@ var BUTTON_MAIN_MAP_PIN_WIDTH_HEIGHT = 65;
 var BUTTON_MAIN_MAP_PIN_HALF_WIDTH_HEIGHT = 32;
 var MAIN_MAP_PIN_POINTER_HEIGHT = 19;
 
-var NO_GEUSTS_OPTION_INDEX = 3;
-var ONE_GEUST_OPTION_INDEX = 2;
-var TWO_GEUSTS_OPTION_INDEX = 1;
-var THREE_GEUSTS_OPTION_INDEX = 0;
+var guestQuantityOption = {
+  NO_GEUSTS_OPTION_INDEX: 3,
+  ONE_GEUST_OPTION_INDEX: 2,
+  TWO_GEUSTS_OPTION_INDEX: 1,
+  THREE_GEUSTS_OPTION_INDEX: 0
+};
 
 var mapPinElement = document.querySelector('.map');
 var adTemplateElement = document.querySelector('#pin').content;
@@ -175,9 +177,8 @@ setAdress(BUTTON_MAIN_MAP_PIN_HALF_WIDTH_HEIGHT, 0);
 
 var formMapElement = document.querySelector('.map__filters');
 formMapElement.setAttribute('disabled', 'disabled');
-formMapElement.querySelector('fieldset').setAttribute('disabled', 'disabled');
-var mapSelectElements = formMapElement.querySelectorAll('select');
-setDisableAttribute(mapSelectElements);
+var mapSelectFieldsetElements = formMapElement.querySelectorAll('select, fieldset');
+setDisableAttribute(mapSelectFieldsetElements);
 var mainMapPinElement = document.querySelector('.map__pin--main');
 
 
@@ -187,22 +188,20 @@ var setActiveCondition = function () {
   mapPinElement.classList.remove('map--faded');
   for (var i = 0; i < fieldsetElements.length; i++) {
     fieldsetElements[i].removeAttribute('disabled');
-    setAdress(BUTTON_MAIN_MAP_PIN_WIDTH_HEIGHT, MAIN_MAP_PIN_POINTER_HEIGHT);
-    roomNumberElement.addEventListener('change', onRoomNumberSelectorChanged);
   }
-
+  setAdress(BUTTON_MAIN_MAP_PIN_WIDTH_HEIGHT, MAIN_MAP_PIN_POINTER_HEIGHT);
   formMapElement.querySelector('fieldset').removeAttribute('disabled');
-  for (var j = 0; j < mapSelectElements.length; j++) {
-    mapSelectElements[j].removeAttribute('disabled');
+  for (var j = 0; j < mapSelectFieldsetElements.length; j++) {
+    mapSelectFieldsetElements[j].removeAttribute('disabled');
   }
   mainMapPinElement.removeEventListener('mousedown', onMainPinMousedown);
   mainMapPinElement.removeEventListener('keydown', onMainPinKeydown);
+  roomNumberElement.addEventListener('change', onRoomNumberSelectorChanged);
 };
 
 var onMainPinMousedown = function (evt) {
   if (evt.button === LEFT_BUTTON_MOUSE) {
     setActiveCondition();
-    roomNumberElement.addEventListener('change', onRoomNumberSelectorChanged);
   }
 };
 
@@ -222,10 +221,10 @@ var roomsCapacityOptionsElements = roomCapacityElement.querySelectorAll('option'
 
 
 var roomsOptionsToBeEnabled = {
-  '1': [ONE_GEUST_OPTION_INDEX],
-  '2': [TWO_GEUSTS_OPTION_INDEX, ONE_GEUST_OPTION_INDEX],
-  '3': [THREE_GEUSTS_OPTION_INDEX, TWO_GEUSTS_OPTION_INDEX, ONE_GEUST_OPTION_INDEX],
-  '100': [NO_GEUSTS_OPTION_INDEX]
+  '1': guestQuantityOption['ONE_GEUST_OPTION_INDEX'],
+  '2': guestQuantityOption['TWO_GEUSTS_OPTION_INDEX, ONE_GEUST_OPTION_INDEX'],
+  '3': guestQuantityOption['THREE_GEUSTS_OPTION_INDEX, TWO_GEUSTS_OPTION_INDEX, ONE_GEUST_OPTION_INDEX'],
+  '100': guestQuantityOption['NO_GEUSTS_OPTION_INDEX']
 };
 
 var setOptionsDisabledExceptDefault = function () {
