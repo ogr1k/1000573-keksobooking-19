@@ -238,7 +238,6 @@ var onRoomNumberSelectorChanged = function () {
     if (!roomsCapacityOptionsElements[i].hasAttribute('disabled')) {
       roomsCapacityOptionsElements[i].setAttribute('disabled', 'disabled');
     }
-    roomsCapacityOptionsElements[i].removeAttribute('selected');
   }
 
   var roomNumberValue = roomNumberElement.value;
@@ -247,7 +246,7 @@ var onRoomNumberSelectorChanged = function () {
     var index = roomsOptionsToBeEnabled[roomNumberValue][j];
     roomsCapacityOptionsElements[index].removeAttribute('disabled');
   }
-  roomsCapacityOptionsElements[index].setAttribute('selected', 'selected');
+  roomCapacityElement.selectedIndex = roomsOptionsToBeEnabled[roomNumberValue][0];
 };
 
 roomNumberElement.addEventListener('change', onRoomNumberSelectorChanged);
