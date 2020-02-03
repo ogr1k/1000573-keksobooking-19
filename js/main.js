@@ -26,6 +26,7 @@ var BUTTON_MAP_PIN_WIDTH = 50;
 var BUTTON_MAP_PIN_HEIGHT = 70;
 
 var ENTER_KEY = 'Enter';
+var LEFT_BUTTON_MOUSE = 0;
 
 var DEFAULT_X_POSITION_MAIN_PIN = 570;
 var DEFAULT_Y_POSITION_MAIN_PIN = 375;
@@ -187,6 +188,7 @@ var setActiveCondition = function () {
   for (var i = 0; i < fieldsetElements.length; i++) {
     fieldsetElements[i].removeAttribute('disabled');
     setAdress(BUTTON_MAIN_MAP_PIN_WIDTH_HEIGHT, MAIN_MAP_PIN_POINTER_HEIGHT);
+    roomNumberElement.addEventListener('change', onRoomNumberSelectorChanged);
   }
 
   formMapElement.querySelector('fieldset').removeAttribute('disabled');
@@ -198,8 +200,9 @@ var setActiveCondition = function () {
 };
 
 var onMainPinMousedown = function (evt) {
-  if (evt.button === 0) {
+  if (evt.button === LEFT_BUTTON_MOUSE) {
     setActiveCondition();
+    roomNumberElement.addEventListener('change', onRoomNumberSelectorChanged);
   }
 };
 
@@ -249,4 +252,4 @@ var onRoomNumberSelectorChanged = function () {
   roomCapacityElement.selectedIndex = roomsOptionsToBeEnabled[roomNumberValue][0];
 };
 
-roomNumberElement.addEventListener('change', onRoomNumberSelectorChanged);
+
