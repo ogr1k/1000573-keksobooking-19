@@ -27,6 +27,7 @@ var BUTTON_MAP_PIN_HEIGHT = 70;
 
 var ENTER_KEY = 'Enter';
 var LEFT_BUTTON_MOUSE = 0;
+var ESC_KEY = 'Escape';
 
 var DEFAULT_X_POSITION_MAIN_PIN = 570;
 var DEFAULT_Y_POSITION_MAIN_PIN = 375;
@@ -38,6 +39,11 @@ var NO_GEUSTS_OPTION_INDEX = 3;
 var ONE_GEUST_OPTION_INDEX = 2;
 var TWO_GEUSTS_OPTION_INDEX = 1;
 var THREE_GEUSTS_OPTION_INDEX = 0;
+
+var MIN_PRICE_FOR_BUNGALO = 0;
+var MIN_PRICE_FOR_FLAT = 1000;
+var MIN_PRICE_FOR_HOUSE = 5000;
+var MIN_PRICE_FOR_PALACE = 10000;
 
 var mapPinElement = document.querySelector('.map');
 var adTemplateElement = document.querySelector('#pin').content;
@@ -113,9 +119,10 @@ var createAdPinsFragment = function () {
 };
 
 var infoTemplateElement = document.querySelector('#card').content;
-var infoElement = infoTemplateElement.cloneNode(true);
+
 
 var getInfoAdElement = function (element) {
+  var infoElement = infoTemplateElement.cloneNode(true);
   infoElement.querySelector('.popup__avatar').src = element.author.avatar;
   infoElement.querySelector('.popup__title').textContent = element.offer.title;
   infoElement.querySelector('.popup__text--address').textContent = element.offer.address;
@@ -123,13 +130,13 @@ var getInfoAdElement = function (element) {
   infoElement.querySelector('.popup__type').textContent = OFFERS_TYPES_TRANSLATION[element.offer.type];
   infoElement.querySelector('.popup__text--capacity').textContent = element.offer.rooms + ' комнаты для ' + element.offer.guests + ' гостей';
   infoElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + element.offer.checkin + ' , выезд до ' + element.offer.checkout;
-  for (var i = 0; i < (FEATURES.length); i++) {
-    infoElement.querySelector('.popup__features').children[i].style.cssText = 'display: none';
-  }
 
-  for (var j = 0; j < element.offer.features.length; j++) {
-    infoElement.querySelector('.popup__features').children[j].classList.add('popup__feature--' + element.offer.features[j]);
-    infoElement.querySelector('.popup__features').children[j].style.cssText = 'display: inline-block';
+  infoElement.querySelector('.popup__features').innerHTML = '';
+
+  for (var i = 0; i < element.offer.features.length; i++) {
+    var createNewElement = document.createElement('li');
+    createNewElement.className = 'popup__feature popup__feature--' + element.offer.features[i];
+    infoElement.querySelector('.popup__features').appendChild(createNewElement);
   }
 
   if (element.offer.description.length === 0) {
@@ -152,7 +159,6 @@ var getInfoAdElement = function (element) {
   return infoElement;
 };
 
-// document.querySelector('.map__filters-container').before(getInfoAdElement(ads[0]));
 
 var formElement = document.querySelector('.ad-form');
 var fieldsetElements = formElement.querySelectorAll('fieldset');
@@ -266,14 +272,23 @@ var renderPinsInfo = function () {
 };
 
 var addClickListener = function (i) {
-  if (mapPopUp.length >= 1) {
+  var removePopUpElement = function () {
     mapPopUp[0].remove();
-  }
+  };
   mapPinsElements[i].addEventListener('click', function () {
+    if (mapPopUp.length !== 0) {
+      removePopUpElement();
+    }
     document.querySelector('.map__filters-container').before(getInfoAdElement(ads[i]));
     mapPopUp = document.querySelectorAll('.map__card');
-    document.querySelector('.popup__close').addEventListener('click', function () {
-      mapPopUp[0].remove();
+    var mapPopUpCloseElement = document.querySelector('.popup__close');
+    mapPopUpCloseElement.addEventListener('click', function () {
+      removePopUpElement();
+    });
+    window.addEventListener('keydown', function (evt) {
+      if (evt.key === ESC_KEY) {
+        removePopUpElement();
+      }
     });
   });
 };
@@ -292,10 +307,10 @@ var onCheckoutTimeSelectorChanged = function () {
 };
 
 var minPriceForTypes = {
-  'bungalo': '0',
-  'flat': '1000',
-  'house': '5000',
-  'palace': '10000'
+  'bungalo': MIN_PRICE_FOR_BUNGALO,
+  'flat': MIN_PRICE_FOR_FLAT,
+  'house': MIN_PRICE_FOR_HOUSE,
+  'palace': MIN_PRICE_FOR_PALACE
 };
 
 var typeElement = document.querySelector('#type');
@@ -304,5 +319,5 @@ var priceInputElement = document.querySelector('#price');
 var onRoomTypeChangePrice = function () {
   var typeValue = typeElement.value;
   priceInputElement.min = minPriceForTypes[typeValue];
+  priceInputElement.placeholder = minPriceForTypes[typeValue];
 };
-
