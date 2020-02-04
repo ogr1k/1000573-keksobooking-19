@@ -266,7 +266,9 @@ var renderPinsInfo = function () {
 };
 
 var addClickListener = function (i) {
-  mapPopUp[0].remove();
+  if (mapPopUp.length >= 1) {
+    mapPopUp[0].remove();
+  }
   mapPinsElements[i].addEventListener('click', function () {
     document.querySelector('.map__filters-container').before(getInfoAdElement(ads[i]));
     mapPopUp = document.querySelectorAll('.map__card');
