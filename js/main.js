@@ -263,8 +263,12 @@ var onRoomNumberSelectorChanged = function () {
 
 var pinPopUp;
 
-var addPinsClickListener = function () {
+var removePopUpAndEscapeListener = function () {
+  pinPopUp.remove();
   document.removeEventListener('keydown', onDocumentClosePopUp);
+};
+
+var addPinsClickListener = function () {
   for (var i = 0; i < mapPinsElements.length; i++) {
     addClickListener(i);
   }
@@ -272,8 +276,7 @@ var addPinsClickListener = function () {
 
 var onDocumentClosePopUp = function (evt) {
   if (evt.key === ESC_KEY) {
-    pinPopUp.remove();
-    document.removeEventListener('keydown', onDocumentClosePopUp);
+    removePopUpAndEscapeListener();
   }
 };
 
@@ -288,7 +291,7 @@ var addClickListener = function (i) {
     document.querySelector('.map__filters-container').before(pinPopUp);
     var mapPopUpCloseElement = document.querySelector('.popup__close');
     mapPopUpCloseElement.addEventListener('click', function () {
-      pinPopUp.remove();
+      removePopUpAndEscapeListener();
     });
     document.addEventListener('keydown', onDocumentClosePopUp);
   });
