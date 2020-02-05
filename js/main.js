@@ -206,7 +206,7 @@ var setActiveCondition = function () {
   roomNumberElement.addEventListener('change', onRoomNumberSelectorChanged);
   checkinSelectElement.addEventListener('change', onCheckinTimeSelectorChanged);
   checkoutSelectElement.addEventListener('change', onCheckoutTimeSelectorChanged);
-  typeElement.addEventListener('change', onRoomTypeChangePricePerNight);
+  typeElement.addEventListener('change', onRoomTypeChange);
 
   mapPinsElements = mapPinsElement.querySelectorAll('button:not(.map__pin--main)');
   addPinsClickListener();
@@ -265,7 +265,7 @@ var pinPopUp;
 
 var removePopUpAndEscapeListener = function () {
   pinPopUp.remove();
-  document.removeEventListener('keydown', onDocumentClosePopUp);
+  document.removeEventListener('keydown', onDocumentKeydown);
 };
 
 var addPinsClickListener = function () {
@@ -274,7 +274,7 @@ var addPinsClickListener = function () {
   }
 };
 
-var onDocumentClosePopUp = function (evt) {
+var onDocumentKeydown = function (evt) {
   if (evt.key === ESC_KEY) {
     removePopUpAndEscapeListener();
   }
@@ -293,7 +293,7 @@ var addClickListener = function (i) {
     mapPopUpCloseElement.addEventListener('click', function () {
       removePopUpAndEscapeListener();
     });
-    document.addEventListener('keydown', onDocumentClosePopUp);
+    document.addEventListener('keydown', onDocumentKeydown);
   });
 };
 
@@ -320,7 +320,7 @@ var minPriceForTypes = {
 var typeElement = document.querySelector('#type');
 var priceInputElement = document.querySelector('#price');
 
-var onRoomTypeChangePricePerNight = function () {
+var onRoomTypeChange = function () {
   var typeValue = typeElement.value;
   priceInputElement.min = minPriceForTypes[typeValue];
   priceInputElement.placeholder = minPriceForTypes[typeValue];
