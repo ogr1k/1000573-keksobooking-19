@@ -5,10 +5,10 @@ var ADS_TITLES = ['Лучшее в мире жилье', 'Бюджетный в�
 var OFFER_PRICE_MAX = 1000000;
 var OFFER_PRICE_MIN = 1;
 var OFFERS_TYPES = ['palace', 'flat', 'house', 'bungalo'];
-/* var OFFERS_TYPES_TRANSLATION = {'palace': 'Дворец',
+var OFFERS_TYPES_TRANSLATION = {'palace': 'Дворец',
   'flat': 'квартира',
   'house': 'дом',
-  'bungalo': 'бунгало'}; */
+  'bungalo': 'бунгало'};
 var ROOMS_QUANTITY_MIN = 1;
 var ROOMS_QUANTITY_MAX = 5;
 var GUESTS_QUANTITY_MIN = 0;
@@ -27,6 +27,7 @@ var BUTTON_MAP_PIN_HEIGHT = 70;
 
 var ENTER_KEY = 'Enter';
 var LEFT_BUTTON_MOUSE = 0;
+var ESC_KEY = 'Escape';
 
 var DEFAULT_X_POSITION_MAIN_PIN = 570;
 var DEFAULT_Y_POSITION_MAIN_PIN = 375;
@@ -38,6 +39,11 @@ var NO_GEUSTS_OPTION_INDEX = 3;
 var ONE_GEUST_OPTION_INDEX = 2;
 var TWO_GEUSTS_OPTION_INDEX = 1;
 var THREE_GEUSTS_OPTION_INDEX = 0;
+
+var MIN_PRICE_FOR_BUNGALO = 0;
+var MIN_PRICE_FOR_FLAT = 1000;
+var MIN_PRICE_FOR_HOUSE = 5000;
+var MIN_PRICE_FOR_PALACE = 10000;
 
 var mapPinElement = document.querySelector('.map');
 var adTemplateElement = document.querySelector('#pin').content;
@@ -112,10 +118,11 @@ var createAdPinsFragment = function () {
   mapPinsElement.appendChild(fragment);
 };
 
-/* var infoTemplateElement = document.querySelector('#card').content;
-var infoElement = infoTemplateElement.cloneNode(true);
+var infoTemplateElement = document.querySelector('#card').content;
+
 
 var getInfoAdElement = function (element) {
+  var infoElement = infoTemplateElement.cloneNode(true);
   infoElement.querySelector('.popup__avatar').src = element.author.avatar;
   infoElement.querySelector('.popup__title').textContent = element.offer.title;
   infoElement.querySelector('.popup__text--address').textContent = element.offer.address;
@@ -123,13 +130,16 @@ var getInfoAdElement = function (element) {
   infoElement.querySelector('.popup__type').textContent = OFFERS_TYPES_TRANSLATION[element.offer.type];
   infoElement.querySelector('.popup__text--capacity').textContent = element.offer.rooms + ' комнаты для ' + element.offer.guests + ' гостей';
   infoElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + element.offer.checkin + ' , выезд до ' + element.offer.checkout;
-  for (var i = 0; i < (FEATURES.length); i++) {
-    infoElement.querySelector('.popup__features').children[i].style.cssText = 'display: none';
-  }
 
-  for (var j = 0; j < element.offer.features.length; j++) {
-    infoElement.querySelector('.popup__features').children[j].classList.add('popup__feature--' + element.offer.features[j]);
-    infoElement.querySelector('.popup__features').children[j].style.cssText = 'display: inline-block';
+  if (element.offer.features.length === 0) {
+    infoElement.querySelector('.popup__features').hidden = true;
+  }
+  infoElement.querySelector('.popup__features').innerHTML = '';
+
+  for (var i = 0; i < element.offer.features.length; i++) {
+    var newElement = document.createElement('li');
+    newElement.className = 'popup__feature popup__feature--' + element.offer.features[i];
+    infoElement.querySelector('.popup__features').appendChild(newElement);
   }
 
   if (element.offer.description.length === 0) {
@@ -152,7 +162,6 @@ var getInfoAdElement = function (element) {
   return infoElement;
 };
 
-document.querySelector('.map__filters-container').before(getInfoAdElement(ads[0])); */
 
 var formElement = document.querySelector('.ad-form');
 var fieldsetElements = formElement.querySelectorAll('fieldset');
@@ -178,11 +187,11 @@ formMapElement.setAttribute('disabled', 'disabled');
 var mapSelectFieldsetElements = formMapElement.querySelectorAll('select, fieldset');
 setDisableAttribute(mapSelectFieldsetElements);
 var mainMapPinElement = document.querySelector('.map__pin--main');
-
+var mapPinsElements;
 
 var setActiveCondition = function () {
-  formElement.classList.remove('ad-form--disabled');
   createAdPinsFragment();
+  formElement.classList.remove('ad-form--disabled');
   mapPinElement.classList.remove('map--faded');
   for (var i = 0; i < fieldsetElements.length; i++) {
     fieldsetElements[i].removeAttribute('disabled');
@@ -195,6 +204,12 @@ var setActiveCondition = function () {
   mainMapPinElement.removeEventListener('mousedown', onMainPinMousedown);
   mainMapPinElement.removeEventListener('keydown', onMainPinKeydown);
   roomNumberElement.addEventListener('change', onRoomNumberSelectorChanged);
+  checkinSelectElement.addEventListener('change', onCheckinTimeSelectorChanged);
+  checkoutSelectElement.addEventListener('change', onCheckoutTimeSelectorChanged);
+  typeElement.addEventListener('change', onRoomTypeChange);
+
+  mapPinsElements = mapPinsElement.querySelectorAll('button:not(.map__pin--main)');
+  addPinsClickListener();
 };
 
 var onMainPinMousedown = function (evt) {
@@ -225,28 +240,90 @@ var roomsOptionsToBeEnabled = {
   '100': [NO_GEUSTS_OPTION_INDEX]
 };
 
-var setOptionsDisabledExceptDefault = function () {
-  for (var i = 0; i < roomsCapacityOptionsElements.length - 1; i++) {
-    roomsCapacityOptionsElements[i].setAttribute('disabled', 'disabled');
+var disableOptions = function (elements, arrayLengths) {
+  for (var i = 0; i < arrayLengths; i++) {
+    if (!elements[i].hasAttribute('disabled')) {
+      elements[i].setAttribute('disabled', 'disabled');
+    }
   }
 };
 
-setOptionsDisabledExceptDefault();
+disableOptions(roomsCapacityOptionsElements, (roomsCapacityOptionsElements.length - 1)); // disable options for 100 rooms
 
 var onRoomNumberSelectorChanged = function () {
-  for (var i = 0; i < roomsCapacityOptionsElements.length; i++) {
-    if (!roomsCapacityOptionsElements[i].hasAttribute('disabled')) {
-      roomsCapacityOptionsElements[i].setAttribute('disabled', 'disabled');
-    }
-  }
-
+  disableOptions(roomsCapacityOptionsElements, roomsCapacityOptionsElements.length);
   var roomNumberValue = roomNumberElement.value;
 
-  for (var j = 0; j < roomsOptionsToBeEnabled[roomNumberValue].length; j++) {
-    var index = roomsOptionsToBeEnabled[roomNumberValue][j];
+  for (var i = 0; i < roomsOptionsToBeEnabled[roomNumberValue].length; i++) {
+    var index = roomsOptionsToBeEnabled[roomNumberValue][i];
     roomsCapacityOptionsElements[index].removeAttribute('disabled');
   }
   roomCapacityElement.selectedIndex = roomsOptionsToBeEnabled[roomNumberValue][0];
+};
+
+var pinPopUp;
+
+var removePopUpAndEscapeListener = function () {
+  pinPopUp.remove();
+  document.removeEventListener('keydown', onDocumentKeydown);
+};
+
+var addPinsClickListener = function () {
+  for (var i = 0; i < mapPinsElements.length; i++) {
+    addClickListener(i);
+  }
+};
+
+var onDocumentKeydown = function (evt) {
+  if (evt.key === ESC_KEY) {
+    removePopUpAndEscapeListener();
+  }
+};
+
+var addClickListener = function (i) {
+  mapPinsElements[i].addEventListener('click', function () {
+    if (pinPopUp !== undefined) {
+      pinPopUp.remove();
+    }
+
+    pinPopUp = getInfoAdElement(ads[i]).children[0];
+
+    document.querySelector('.map__filters-container').before(pinPopUp);
+    var mapPopUpCloseElement = document.querySelector('.popup__close');
+    mapPopUpCloseElement.addEventListener('click', function () {
+      removePopUpAndEscapeListener();
+    });
+    document.addEventListener('keydown', onDocumentKeydown);
+  });
+};
+
+var checkoutSelectElement = document.querySelector('#timeout');
+var checkinSelectElement = document.querySelector('#timein');
+
+
+var onCheckinTimeSelectorChanged = function () {
+  checkoutSelectElement.value = checkinSelectElement.value;
+};
+
+
+var onCheckoutTimeSelectorChanged = function () {
+  checkinSelectElement.value = checkoutSelectElement.value;
+};
+
+var minPriceForTypes = {
+  'bungalo': MIN_PRICE_FOR_BUNGALO,
+  'flat': MIN_PRICE_FOR_FLAT,
+  'house': MIN_PRICE_FOR_HOUSE,
+  'palace': MIN_PRICE_FOR_PALACE
+};
+
+var typeElement = document.querySelector('#type');
+var priceInputElement = document.querySelector('#price');
+
+var onRoomTypeChange = function () {
+  var typeValue = typeElement.value;
+  priceInputElement.min = minPriceForTypes[typeValue];
+  priceInputElement.placeholder = minPriceForTypes[typeValue];
 };
 
 

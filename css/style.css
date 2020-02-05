@@ -1249,3 +1249,8 @@ fieldset {
   outline: none;
   opacity: 0.6;
 }
+
+
+input:invalid {
+  border-color: red;
+}
