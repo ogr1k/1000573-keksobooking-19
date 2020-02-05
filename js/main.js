@@ -264,9 +264,9 @@ var onRoomNumberSelectorChanged = function () {
 var pinPopUp;
 
 var addPinsClickListener = function () {
+  document.removeEventListener('keydown', onDocumentClosePopUp);
   for (var i = 0; i < mapPinsElements.length; i++) {
     addClickListener(i);
-    document.removeEventListener('keydown', onDocumentClosePopUp);
   }
 };
 
