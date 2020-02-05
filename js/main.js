@@ -131,6 +131,9 @@ var getInfoAdElement = function (element) {
   infoElement.querySelector('.popup__text--capacity').textContent = element.offer.rooms + ' комнаты для ' + element.offer.guests + ' гостей';
   infoElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + element.offer.checkin + ' , выезд до ' + element.offer.checkout;
 
+  if (element.offer.features.length === 0) {
+    infoElement.querySelector('.popup__features').hidden = true;
+  }
   infoElement.querySelector('.popup__features').innerHTML = '';
 
   for (var i = 0; i < element.offer.features.length; i++) {
@@ -263,13 +266,14 @@ var pinPopUp;
 var addPinsClickListener = function () {
   for (var i = 0; i < mapPinsElements.length; i++) {
     addClickListener(i);
+    document.removeEventListener('keydown', onDocumentClosePopUp);
   }
 };
 
-var addEscapeListener = function (evt) {
+var onDocumentClosePopUp = function (evt) {
   if (evt.key === ESC_KEY) {
     pinPopUp.remove();
-    document.removeEventListener('keydown', addEscapeListener);
+    document.removeEventListener('keydown', onDocumentClosePopUp);
   }
 };
 
@@ -286,7 +290,7 @@ var addClickListener = function (i) {
     mapPopUpCloseElement.addEventListener('click', function () {
       pinPopUp.remove();
     });
-    document.addEventListener('keydown', addEscapeListener);
+    document.addEventListener('keydown', onDocumentClosePopUp);
   });
 };
 
