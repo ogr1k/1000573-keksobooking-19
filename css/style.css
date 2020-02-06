@@ -1251,6 +1251,3 @@ fieldset {
 }
 
 
-input:invalid {
-  border-color: red;
-}
