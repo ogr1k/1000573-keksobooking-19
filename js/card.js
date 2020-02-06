@@ -1,3 +1,5 @@
+'use strict';
+
 (function () {
 
   var MAIN_MAP_PIN_AND_POINTER_HEIGHT = 84;
