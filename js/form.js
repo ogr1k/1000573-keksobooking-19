@@ -2,12 +2,6 @@
 
 (function () {
 
-  var DEFAULT_X_POSITION_MAIN_PIN = 570;
-  var DEFAULT_Y_POSITION_MAIN_PIN = 375;
-  var BUTTON_MAIN_MAP_PIN_WIDTH_HEIGHT = 65;
-  var BUTTON_MAIN_MAP_PIN_HALF_WIDTH_HEIGHT = 32;
-  var MAIN_MAP_PIN_POINTER_HEIGHT = 19;
-
   var NO_GEUSTS_OPTION_INDEX = 3;
   var ONE_GEUST_OPTION_INDEX = 2;
   var TWO_GEUSTS_OPTION_INDEX = 1;
@@ -20,6 +14,9 @@
 
   var ENTER_KEY = 'Enter';
   var LEFT_BUTTON_MOUSE = 0;
+
+  var MAIN_PIN_HALF_WIDTH = 32;
+  var MAIN_PIN_HEIGHT_WITHOUT_POINTER = 31;
 
   var roomsOptionsToBeEnabled = {
     '1': [ONE_GEUST_OPTION_INDEX],
@@ -41,7 +38,10 @@
 
   var mapPinElement = document.querySelector('.map');
   var mapPinsElement = document.querySelector('.map__pins');
+  var adressInputElement = document.querySelector('#address');
+  var mainMapPinElement = document.querySelector('.map__pin--main');
 
+  adressInputElement.value = (mainMapPinElement.offsetTop + MAIN_PIN_HEIGHT_WITHOUT_POINTER) + ', ' + (mainMapPinElement.offsetLeft + MAIN_PIN_HALF_WIDTH);
 
   var setDisableAttribute = function (elements) {
     for (var i = 0; i < elements.length; i++) {
@@ -50,20 +50,11 @@
   };
 
   setDisableAttribute(fieldsetElements);
-  var adressInputElement = document.querySelector('#address');
-
-  var setAdress = function (buttonHeight, pointerHeight) {
-    adressInputElement.value = Math.round((DEFAULT_X_POSITION_MAIN_PIN + buttonHeight)) + ', ' + Math.round((DEFAULT_Y_POSITION_MAIN_PIN + (BUTTON_MAIN_MAP_PIN_WIDTH_HEIGHT + pointerHeight)));
-  };
-
-  setAdress(BUTTON_MAIN_MAP_PIN_HALF_WIDTH_HEIGHT, 0);
-
 
   var formMapElement = document.querySelector('.map__filters');
   formMapElement.setAttribute('disabled', 'disabled');
   var mapSelectFieldsetElements = formMapElement.querySelectorAll('select, fieldset');
   setDisableAttribute(mapSelectFieldsetElements);
-  var mainMapPinElement = document.querySelector('.map__pin--main');
 
   var setActiveCondition = function () {
     window.pininfo.createAdPinsFragment();
@@ -72,7 +63,7 @@
     for (var i = 0; i < fieldsetElements.length; i++) {
       fieldsetElements[i].removeAttribute('disabled');
     }
-    setAdress(BUTTON_MAIN_MAP_PIN_WIDTH_HEIGHT, MAIN_MAP_PIN_POINTER_HEIGHT);
+    // setAdress(BUTTON_MAIN_MAP_PIN_WIDTH_HEIGHT, MAIN_MAP_PIN_POINTER_HEIGHT);
     formMapElement.querySelector('fieldset').removeAttribute('disabled');
     for (var j = 0; j < mapSelectFieldsetElements.length; j++) {
       mapSelectFieldsetElements[j].removeAttribute('disabled');
