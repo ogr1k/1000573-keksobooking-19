@@ -18,11 +18,26 @@
   var MIN_PRICE_FOR_HOUSE = 5000;
   var MIN_PRICE_FOR_PALACE = 10000;
 
+  var ENTER_KEY = 'Enter';
+  var LEFT_BUTTON_MOUSE = 0;
+
+  var roomsOptionsToBeEnabled = {
+    '1': [ONE_GEUST_OPTION_INDEX],
+    '2': [TWO_GEUSTS_OPTION_INDEX, ONE_GEUST_OPTION_INDEX],
+    '3': [THREE_GEUSTS_OPTION_INDEX, TWO_GEUSTS_OPTION_INDEX, ONE_GEUST_OPTION_INDEX],
+    '100': [NO_GEUSTS_OPTION_INDEX]
+  };
+
+  var minPriceForTypes = {
+    'bungalo': MIN_PRICE_FOR_BUNGALO,
+    'flat': MIN_PRICE_FOR_FLAT,
+    'house': MIN_PRICE_FOR_HOUSE,
+    'palace': MIN_PRICE_FOR_PALACE
+  };
+
   var formElement = document.querySelector('.ad-form');
   var fieldsetElements = formElement.querySelectorAll('fieldset');
 
-  var ENTER_KEY = 'Enter';
-  var LEFT_BUTTON_MOUSE = 0;
 
   var mapPinElement = document.querySelector('.map');
   var mapPinsElement = document.querySelector('.map__pins');
@@ -49,7 +64,6 @@
   var mapSelectFieldsetElements = formMapElement.querySelectorAll('select, fieldset');
   setDisableAttribute(mapSelectFieldsetElements);
   var mainMapPinElement = document.querySelector('.map__pin--main');
-  window.mapPinsElements = '';
 
   var setActiveCondition = function () {
     window.pininfo.createAdPinsFragment();
@@ -70,6 +84,8 @@
     checkoutSelectElement.addEventListener('change', onCheckoutTimeSelectorChanged);
     typeElement.addEventListener('change', onRoomTypeChange);
     submitButton.addEventListener('click', onSubmitButtonClick);
+    titleInputElement.addEventListener('input', onInputChanged);
+    priceInputElement.addEventListener('input', onInputChanged);
 
     window.mapPinsElements = mapPinsElement.querySelectorAll('button:not(.map__pin--main)');
     window.pininfo.addPinsClickListener();
@@ -95,13 +111,6 @@
   var roomCapacityElement = document.querySelector('#capacity');
   var roomsCapacityOptionsElements = roomCapacityElement.querySelectorAll('option');
 
-
-  var roomsOptionsToBeEnabled = {
-    '1': [ONE_GEUST_OPTION_INDEX],
-    '2': [TWO_GEUSTS_OPTION_INDEX, ONE_GEUST_OPTION_INDEX],
-    '3': [THREE_GEUSTS_OPTION_INDEX, TWO_GEUSTS_OPTION_INDEX, ONE_GEUST_OPTION_INDEX],
-    '100': [NO_GEUSTS_OPTION_INDEX]
-  };
 
   var disableOptions = function (elements, arrayLengths) {
     for (var i = 0; i < arrayLengths; i++) {
@@ -137,13 +146,6 @@
     checkinSelectElement.value = checkoutSelectElement.value;
   };
 
-  var minPriceForTypes = {
-    'bungalo': MIN_PRICE_FOR_BUNGALO,
-    'flat': MIN_PRICE_FOR_FLAT,
-    'house': MIN_PRICE_FOR_HOUSE,
-    'palace': MIN_PRICE_FOR_PALACE
-  };
-
   var typeElement = document.querySelector('#type');
   var priceInputElement = document.querySelector('#price');
   var typeValue;
@@ -156,12 +158,19 @@
   var titleInputElement = document.querySelector('#title');
   var submitButton = document.querySelector('.ad-form__submit');
   var onSubmitButtonClick = function () {
-    if (titleInputElement.value.length < titleInputElement.minLength || titleInputElement.value.length > titleInputElement.maxLength) {
+    if (!titleInputElement.checkValidity()) {
       titleInputElement.style.borderColor = 'red';
     }
-    if (priceInputElement.value < minPriceForTypes[typeValue]) {
+    if (!priceInputElement.checkValidity()) {
       priceInputElement.style.borderColor = 'red';
     }
   };
 
+  var onInputChanged = function (evt) {
+    if (evt.target.checkValidity()) {
+      evt.target.style.borderColor = 'silver';
+    }
+  };
+
+  window.mapPinsElements = [];
 })();

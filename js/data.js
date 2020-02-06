@@ -37,12 +37,12 @@
     return elements[getRandomInteger(0, elements.length - 1)];
   };
 
-  window.ads = [];
+  var interimAds = [];
   var createAdsList = function (objectCount) {
     for (var i = 0; i < objectCount; i++) {
       var randomLocationX = getRandomInteger(LOCATION_X_MIN, LOCATION_X_MAX);
       var randomLocationY = getRandomInteger(LOCATION_Y_MIN, LOCATION_Y_MAX);
-      ads.push({
+      interimAds.push({
         author: {
           avatar: 'img/avatars/user' + AVATAR_IMAGE_FIRST_DIGIT + (i + 1) + '.png'
         },
@@ -67,7 +67,6 @@
       });
     }
   };
-
   createAdsList(AD_QUANTITY);
-
+  window.ads = interimAds;
 })();

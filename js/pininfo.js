@@ -23,21 +23,6 @@
 
     return adElement;
   };
-  window.pininfo = {
-    addPinsClickListener: function () {
-      for (var i = 0; i < window.mapPinsElements.length; i++) {
-        addClickListener(i);
-      }
-    },
-
-    createAdPinsFragment: function () {
-      var fragment = document.createDocumentFragment();
-      for (var i = 0; i < window.ads.length; i++) {
-        fragment.appendChild(renderAdPin(window.ads[i]));
-      }
-      mapPinsElement.appendChild(fragment);
-    }
-  };
 
   var infoTemplateElement = document.querySelector('#card').content;
 
@@ -113,5 +98,19 @@
       });
       document.addEventListener('keydown', onDocumentKeydown);
     });
+  };
+  window.pininfo = {
+    addPinsClickListener: function () {
+      for (var i = 0; i < window.mapPinsElements.length; i++) {
+        addClickListener(i);
+      }
+    },
+    createAdPinsFragment: function () {
+      var fragment = document.createDocumentFragment();
+      for (var i = 0; i < window.ads.length; i++) {
+        fragment.appendChild(renderAdPin(window.ads[i]));
+      }
+      mapPinsElement.appendChild(fragment);
+    }
   };
 })();
