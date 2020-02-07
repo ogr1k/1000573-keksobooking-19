@@ -9,9 +9,12 @@
   var BLOCK_MIN_WIDTH_FOR_PIN = 0 - BUTTON_MAIN_MAP_PIN_HALF_WIDTH;
   var BLOCK_MAX_HEIGHT_FOR_PIN = 630;
   var BLOCK_MIN_HEIGHT_FOR_PIN = 130;
+  var MAIN_PIN_HEIGHT_WITHOUT_POINTER = 31;
 
   var mainPinElement = document.querySelector('.map__pin--main');
   var adressInputElement = document.querySelector('#address');
+
+  adressInputElement.value = (mainPinElement.offsetTop + MAIN_PIN_HEIGHT_WITHOUT_POINTER) + ', ' + (mainPinElement.offsetLeft + BUTTON_MAIN_MAP_PIN_HALF_WIDTH);
 
   mainPinElement.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
@@ -37,6 +40,9 @@
       yPosition = mainPinElement.offsetTop - shift.y;
       xPosition = mainPinElement.offsetLeft - shift.x;
 
+      yPosition = Math.max(BLOCK_MIN_HEIGHT_FOR_PIN, Math.min(yPosition, BLOCK_MAX_HEIGHT_FOR_PIN));
+      xPosition = Math.max(BLOCK_MIN_WIDTH_FOR_PIN, Math.min(xPosition, BLOCK_MAX_WIDTH_FOR_PIN));
+
       mainPinElement.style.top = yPosition + 'px';
       mainPinElement.style.left = xPosition + 'px';
       adressInputElement.value = (yPosition + MAIN_MAP_PIN_AND_POINTER_HEIGHT) + ', ' + (xPosition + BUTTON_MAIN_MAP_PIN_HALF_WIDTH);
@@ -48,22 +54,6 @@
 
 
       setMainPinPosition(moveEvt);
-
-      if (xPosition > BLOCK_MAX_WIDTH_FOR_PIN) {
-        mainPinElement.style.left = BLOCK_MAX_WIDTH_FOR_PIN + 'px';
-      }
-
-      if (xPosition < BLOCK_MIN_WIDTH_FOR_PIN) {
-        mainPinElement.style.left = BLOCK_MIN_WIDTH_FOR_PIN + 'px';
-      }
-
-      if (yPosition > BLOCK_MAX_HEIGHT_FOR_PIN) {
-        mainPinElement.style.top = BLOCK_MAX_HEIGHT_FOR_PIN + 'px';
-      }
-
-      if (yPosition < BLOCK_MIN_HEIGHT_FOR_PIN) {
-        mainPinElement.style.top = BLOCK_MIN_HEIGHT_FOR_PIN + 'px';
-      }
 
     };
 
