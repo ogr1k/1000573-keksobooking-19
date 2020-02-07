@@ -1,33 +1,15 @@
 'use strict';
+
 (function () {
-  var BUTTON_MAP_PIN_WIDTH = 50;
-  var BUTTON_MAP_PIN_HEIGHT = 70;
 
   var OFFERS_TYPES_TRANSLATION = {'palace': 'Дворец',
     'flat': 'квартира',
     'house': 'дом',
     'bungalo': 'бунгало'};
 
-  var ESC_KEY = 'Escape';
-
-
-  var adTemplateElement = document.querySelector('#pin').content;
-  var mapPinsElement = document.querySelector('.map__pins');
-
-  var renderAdPin = function (ad) {
-    var adElement = adTemplateElement.cloneNode(true);
-    var mapPinStyle = 'left:' + (ad.location.x - (BUTTON_MAP_PIN_WIDTH / 2)) + 'px; top: ' + (ad.location.y - BUTTON_MAP_PIN_HEIGHT) + 'px;';
-    adElement.querySelector('img').src = ad.author.avatar;
-    adElement.querySelector('img').alt = ad.offer.title;
-    adElement.querySelector('.map__pin').style.cssText = mapPinStyle;
-
-    return adElement;
-  };
-
   var infoTemplateElement = document.querySelector('#card').content;
 
-
-  var getInfoAdElement = function (element) {
+  window.getInfoAdElement = function (element) {
     var infoElement = infoTemplateElement.cloneNode(true);
     infoElement.querySelector('.popup__avatar').src = element.author.avatar;
     infoElement.querySelector('.popup__title').textContent = element.offer.title;
@@ -67,50 +49,6 @@
 
     return infoElement;
   };
-
-
-  var pinPopUp;
-
-  var removePopUpAndEscapeListener = function () {
-    pinPopUp.remove();
-    document.removeEventListener('keydown', onDocumentKeydown);
-  };
-
-
-  var onDocumentKeydown = function (evt) {
-    if (evt.key === ESC_KEY) {
-      removePopUpAndEscapeListener();
-    }
-  };
-
-  var addClickListener = function (i) {
-    window.mapPinsElements[i].addEventListener('click', function () {
-      if (pinPopUp !== undefined) {
-        pinPopUp.remove();
-      }
-
-      pinPopUp = getInfoAdElement(window.ads[i]).children[0];
-
-      document.querySelector('.map__filters-container').before(pinPopUp);
-      var mapPopUpCloseElement = document.querySelector('.popup__close');
-      mapPopUpCloseElement.addEventListener('click', function () {
-        removePopUpAndEscapeListener();
-      });
-      document.addEventListener('keydown', onDocumentKeydown);
-    });
-  };
-  window.pininfo = {
-    addPinsClickListener: function () {
-      for (var i = 0; i < window.mapPinsElements.length; i++) {
-        addClickListener(i);
-      }
-    },
-    createAdPinsFragment: function () {
-      var fragment = document.createDocumentFragment();
-      for (var i = 0; i < window.ads.length; i++) {
-        fragment.appendChild(renderAdPin(window.ads[i]));
-      }
-      mapPinsElement.appendChild(fragment);
-    }
-  };
 })();
+
+
