@@ -1,21 +1,73 @@
 'use strict';
-
 (function () {
+  var ESC_KEY = 'Escape';
+  var mapPinsElements;
+  window.pinsActiveCondition = function () {
 
-  var BUTTON_MAP_PIN_WIDTH = 50;
-  var BUTTON_MAP_PIN_HEIGHT = 70;
+    var BUTTON_MAP_PIN_WIDTH = 50;
+    var BUTTON_MAP_PIN_HEIGHT = 70;
+
+    var mapPinsElement = document.querySelector('.map__pins');
+
+    var adTemplateElement = document.querySelector('#pin').content;
+
+    var renderAdPin = function (ad) {
+      var adElement = adTemplateElement.cloneNode(true);
+      var mapPinStyle = 'left:' + (ad.location.x - (BUTTON_MAP_PIN_WIDTH / 2)) + 'px; top: ' + (ad.location.y - BUTTON_MAP_PIN_HEIGHT) + 'px;';
+      adElement.querySelector('img').src = ad.author.avatar;
+      adElement.querySelector('img').alt = ad.offer.title;
+      adElement.querySelector('.map__pin').style.cssText = mapPinStyle;
+
+      return adElement;
+    };
+
+    var createAdPinsFragment = function () {
+      var fragment = document.createDocumentFragment();
+      for (var i = 0; i < window.ads.length; i++) {
+        fragment.appendChild(renderAdPin(window.ads[i]));
+      }
+      mapPinsElement.appendChild(fragment);
+    };
+    createAdPinsFragment();
+
+    mapPinsElements = mapPinsElement.querySelectorAll('button:not(.map__pin--main)');
+    var pinPopUp;
+
+    var removePopUpAndEscapeListener = function () {
+      pinPopUp.remove();
+      document.removeEventListener('keydown', onDocumentKeydown);
+    };
 
 
-  var adTemplateElement = document.querySelector('#pin').content;
+    var onDocumentKeydown = function (evt) {
+      if (evt.key === ESC_KEY) {
+        removePopUpAndEscapeListener();
+      }
+    };
 
-  window.renderAdPin = function (ad) {
-    var adElement = adTemplateElement.cloneNode(true);
-    var mapPinStyle = 'left:' + (ad.location.x - (BUTTON_MAP_PIN_WIDTH / 2)) + 'px; top: ' + (ad.location.y - BUTTON_MAP_PIN_HEIGHT) + 'px;';
-    adElement.querySelector('img').src = ad.author.avatar;
-    adElement.querySelector('img').alt = ad.offer.title;
-    adElement.querySelector('.map__pin').style.cssText = mapPinStyle;
+    var addClickListener = function (i) {
+      mapPinsElements[i].addEventListener('click', function () {
+        if (pinPopUp !== undefined) {
+          pinPopUp.remove();
+        }
 
-    return adElement;
+        pinPopUp = window.getInfoAdElement(window.ads[i]).children[0];
+
+        document.querySelector('.map__filters-container').before(pinPopUp);
+        var mapPopUpCloseElement = document.querySelector('.popup__close');
+        mapPopUpCloseElement.addEventListener('click', function () {
+          removePopUpAndEscapeListener();
+        });
+        document.addEventListener('keydown', onDocumentKeydown);
+      });
+    };
+
+
+    var addPinsClickListener = function () {
+      for (var i = 0; i < mapPinsElements.length; i++) {
+        addClickListener(i);
+      }
+    };
+    addPinsClickListener();
   };
-
 })();

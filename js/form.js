@@ -2,6 +2,7 @@
 
 (function () {
 
+
   var NO_GEUSTS_OPTION_INDEX = 3;
   var ONE_GEUST_OPTION_INDEX = 2;
   var TWO_GEUSTS_OPTION_INDEX = 1;
@@ -27,69 +28,107 @@
     'palace': MIN_PRICE_FOR_PALACE
   };
 
-  var roomsCapacityOptionsElements = document.querySelector('#capacity').querySelectorAll('option');
-  var typeValue;
+  var formElement = document.querySelector('.ad-form');
+  var fieldsetElements = formElement.querySelectorAll('fieldset');
 
 
-  var disableOptions = function (elements, arrayLengths) {
-    for (var i = 0; i < arrayLengths; i++) {
-      if (!elements[i].hasAttribute('disabled')) {
-        elements[i].setAttribute('disabled', 'disabled');
-      }
+  var mapPinElement = document.querySelector('.map');
+
+
+  var setDisableAttribute = function (elements) {
+    for (var i = 0; i < elements.length; i++) {
+      elements[i].setAttribute('disabled', 'disabled');
     }
   };
 
-  disableOptions(roomsCapacityOptionsElements, (roomsCapacityOptionsElements.length - 1));
+  setDisableAttribute(fieldsetElements);
 
-  window.form = {
-    roomNumberElement: document.querySelector('#room_number'),
-    roomCapacityElement: document.querySelector('#capacity'),
-    checkoutSelectElement: document.querySelector('#timeout'),
-    checkinSelectElement: document.querySelector('#timein'),
-    typeElement: document.querySelector('#type'),
-    priceInputElement: document.querySelector('#price'),
-    titleInputElement: document.querySelector('#title'),
-    submitButton: document.querySelector('.ad-form__submit'),
 
-    onRoomNumberSelectorChanged: function () {
+  var formMapElement = document.querySelector('.map__filters');
+  formMapElement.setAttribute('disabled', 'disabled');
+  var mapSelectFieldsetElements = formMapElement.querySelectorAll('select, fieldset');
+  setDisableAttribute(mapSelectFieldsetElements);
+  var roomNumberElement = document.querySelector('#room_number');
+  var roomCapacityElement = document.querySelector('#capacity');
+  var roomsCapacityOptionsElements = roomCapacityElement.querySelectorAll('option');
+  var checkoutSelectElement = document.querySelector('#timeout');
+  var checkinSelectElement = document.querySelector('#timein');
+  var typeElement = document.querySelector('#type');
+  var priceInputElement = document.querySelector('#price');
+  var typeValue;
+  var titleInputElement = document.querySelector('#title');
+  var submitButton = document.querySelector('.ad-form__submit');
+
+
+  window.formActiveCondition = function () {
+    var disableOptions = function (elements, arrayLengths) {
+      for (var l = 0; l < arrayLengths; l++) {
+        if (!elements[l].hasAttribute('disabled')) {
+          elements[l].setAttribute('disabled', 'disabled');
+        }
+      }
+    };
+
+    disableOptions(roomsCapacityOptionsElements, (roomsCapacityOptionsElements.length - 1));
+
+    formElement.classList.remove('ad-form--disabled');
+    mapPinElement.classList.remove('map--faded');
+    for (var i = 0; i < fieldsetElements.length; i++) {
+      fieldsetElements[i].removeAttribute('disabled');
+    }
+    formMapElement.querySelector('fieldset').removeAttribute('disabled');
+    for (var j = 0; j < mapSelectFieldsetElements.length; j++) {
+      mapSelectFieldsetElements[j].removeAttribute('disabled');
+    }
+    var onRoomNumberSelectorChanged = function () {
       disableOptions(roomsCapacityOptionsElements, roomsCapacityOptionsElements.length);
-      var roomNumberValue = window.form.roomNumberElement.value;
+      var roomNumberValue = roomNumberElement.value;
 
-      for (var i = 0; i < roomsOptionsToBeEnabled[roomNumberValue].length; i++) {
-        var index = roomsOptionsToBeEnabled[roomNumberValue][i];
+      for (var k = 0; k < roomsOptionsToBeEnabled[roomNumberValue].length; k++) {
+        var index = roomsOptionsToBeEnabled[roomNumberValue][k];
         roomsCapacityOptionsElements[index].removeAttribute('disabled');
       }
-      window.form.roomCapacityElement.selectedIndex = roomsOptionsToBeEnabled[roomNumberValue][0];
-    },
+      roomCapacityElement.selectedIndex = roomsOptionsToBeEnabled[roomNumberValue][0];
+    };
+    var onCheckinTimeSelectorChanged = function () {
+      checkoutSelectElement.value = checkinSelectElement.value;
+    };
 
-    onCheckinTimeSelectorChanged: function () {
-      window.form.checkoutSelectElement.value = window.form.checkinSelectElement.value;
-    },
+    var onCheckoutTimeSelectorChanged = function () {
+      checkinSelectElement.value = checkoutSelectElement.value;
+    };
+
+    var onRoomTypeChange = function () {
+      typeValue = typeElement.value;
+      priceInputElement.min = minPriceForTypes[typeValue];
+      priceInputElement.placeholder = minPriceForTypes[typeValue];
+    };
 
 
-    onCheckoutTimeSelectorChanged: function () {
-      window.form.checkinSelectElement.value = window.form.checkoutSelectElement.value;
-    },
-
-    onRoomTypeChange: function () {
-      typeValue = window.form.typeElement.value;
-      window.form.priceInputElement.min = minPriceForTypes[typeValue];
-      window.form.priceInputElement.placeholder = minPriceForTypes[typeValue];
-    },
-
-    onSubmitButtonClick: function () {
-      if (!window.form.titleInputElement.checkValidity()) {
-        window.form.titleInputElement.style.borderColor = 'red';
+    var onSubmitButtonClick = function () {
+      if (!titleInputElement.checkValidity()) {
+        titleInputElement.style.borderColor = 'red';
       }
-      if (!window.form.priceInputElement.checkValidity()) {
-        window.form.priceInputElement.style.borderColor = 'red';
+      if (!priceInputElement.checkValidity()) {
+        priceInputElement.style.borderColor = 'red';
       }
-    },
+    };
 
-    onInputChanged: function (evt) {
+    var onInputChanged = function (evt) {
       if (evt.target.checkValidity()) {
         evt.target.style.borderColor = 'silver';
       }
-    }
+    };
+
+
+    roomNumberElement.addEventListener('change', onRoomNumberSelectorChanged);
+    checkinSelectElement.addEventListener('change', onCheckinTimeSelectorChanged);
+    checkoutSelectElement.addEventListener('change', onCheckoutTimeSelectorChanged);
+    typeElement.addEventListener('change', onRoomTypeChange);
+    submitButton.addEventListener('click', onSubmitButtonClick);
+    titleInputElement.addEventListener('input', onInputChanged);
+    priceInputElement.addEventListener('input', onInputChanged);
+
   };
 })();
+

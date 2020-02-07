@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-  var ESC_KEY = 'Escape';
 
   var OFFERS_TYPES_TRANSLATION = {'palace': 'Дворец',
     'flat': 'квартира',
@@ -9,9 +8,8 @@
     'bungalo': 'бунгало'};
 
   var infoTemplateElement = document.querySelector('#card').content;
-  var mapPinsElement = document.querySelector('.map__pins');
 
-  var getInfoAdElement = function (element) {
+  window.getInfoAdElement = function (element) {
     var infoElement = infoTemplateElement.cloneNode(true);
     infoElement.querySelector('.popup__avatar').src = element.author.avatar;
     infoElement.querySelector('.popup__title').textContent = element.offer.title;
@@ -51,54 +49,6 @@
 
     return infoElement;
   };
-
-
-  var pinPopUp;
-
-  var removePopUpAndEscapeListener = function () {
-    pinPopUp.remove();
-    document.removeEventListener('keydown', onDocumentKeydown);
-  };
-
-
-  var onDocumentKeydown = function (evt) {
-    if (evt.key === ESC_KEY) {
-      removePopUpAndEscapeListener();
-    }
-  };
-
-  var addClickListener = function (i) {
-    window.mapPinsElements[i].addEventListener('click', function () {
-      if (pinPopUp !== undefined) {
-        pinPopUp.remove();
-      }
-
-      pinPopUp = getInfoAdElement(window.ads[i]).children[0];
-
-      document.querySelector('.map__filters-container').before(pinPopUp);
-      var mapPopUpCloseElement = document.querySelector('.popup__close');
-      mapPopUpCloseElement.addEventListener('click', function () {
-        removePopUpAndEscapeListener();
-      });
-      document.addEventListener('keydown', onDocumentKeydown);
-    });
-  };
-
-  window.card = {
-    addPinsClickListener: function () {
-      for (var i = 0; i < window.mapPinsElements.length; i++) {
-        addClickListener(i);
-      }
-    },
-    createAdPinsFragment: function () {
-      var fragment = document.createDocumentFragment();
-      for (var i = 0; i < window.ads.length; i++) {
-        fragment.appendChild(window.renderAdPin(window.ads[i]));
-      }
-      mapPinsElement.appendChild(fragment);
-    }
-  };
-
 })();
 
 

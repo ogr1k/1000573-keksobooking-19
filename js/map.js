@@ -19,8 +19,6 @@
   var fieldsetElements = formElement.querySelectorAll('fieldset');
 
 
-  var mapPinElement = document.querySelector('.map');
-  var mapPinsElement = document.querySelector('.map__pins');
   var mainMapPinElement = document.querySelector('.map__pin--main');
 
 
@@ -38,28 +36,10 @@
   setDisableAttribute(mapSelectFieldsetElements);
 
   var setActiveCondition = function () {
-    window.card.createAdPinsFragment();
-    formElement.classList.remove('ad-form--disabled');
-    mapPinElement.classList.remove('map--faded');
-    for (var i = 0; i < fieldsetElements.length; i++) {
-      fieldsetElements[i].removeAttribute('disabled');
-    }
-    formMapElement.querySelector('fieldset').removeAttribute('disabled');
-    for (var j = 0; j < mapSelectFieldsetElements.length; j++) {
-      mapSelectFieldsetElements[j].removeAttribute('disabled');
-    }
+    window.pinsActiveCondition();
     mainMapPinElement.removeEventListener('mousedown', onMainPinMousedown);
     mainMapPinElement.removeEventListener('keydown', onMainPinKeydown);
-    window.form.roomNumberElement.addEventListener('change', window.form.onRoomNumberSelectorChanged);
-    window.form.checkinSelectElement.addEventListener('change', window.form.onCheckinTimeSelectorChanged);
-    window.form.checkoutSelectElement.addEventListener('change', window.form.onCheckoutTimeSelectorChanged);
-    window.form.typeElement.addEventListener('change', window.form.onRoomTypeChange);
-    window.form.submitButton.addEventListener('click', window.form.onSubmitButtonClick);
-    window.form.titleInputElement.addEventListener('input', window.form.onInputChanged);
-    window.form.priceInputElement.addEventListener('input', window.form.onInputChanged);
-
-    window.mapPinsElements = mapPinsElement.querySelectorAll('button:not(.map__pin--main)');
-    window.card.addPinsClickListener();
+    window.formActiveCondition();
   };
 
   var onMainPinMousedown = function (evt) {
@@ -142,6 +122,5 @@
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
   });
-
 
 })();
