@@ -60,7 +60,7 @@
   var submitButton = document.querySelector('.ad-form__submit');
 
 
-  window.formActiveCondition = function () {
+  window.setFormActiveCondition = function () {
     var disableOptions = function (elements, arrayLengths) {
       for (var l = 0; l < arrayLengths; l++) {
         if (!elements[l].hasAttribute('disabled')) {

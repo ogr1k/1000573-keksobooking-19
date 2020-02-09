@@ -1,11 +1,11 @@
 'use strict';
 (function () {
   var ESC_KEY = 'Escape';
-  var mapPinsElements;
-  window.pinsActiveCondition = function () {
+  var BUTTON_MAP_PIN_WIDTH = 50;
+  var BUTTON_MAP_PIN_HEIGHT = 70;
 
-    var BUTTON_MAP_PIN_WIDTH = 50;
-    var BUTTON_MAP_PIN_HEIGHT = 70;
+  var mapPinsElements;
+  window.setPinsActiveCondition = function () {
 
     var mapPinsElement = document.querySelector('.map__pins');
 

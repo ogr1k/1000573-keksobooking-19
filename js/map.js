@@ -36,10 +36,10 @@
   setDisableAttribute(mapSelectFieldsetElements);
 
   var setActiveCondition = function () {
-    window.pinsActiveCondition();
+    window.setPinsActiveCondition();
     mainMapPinElement.removeEventListener('mousedown', onMainPinMousedown);
     mainMapPinElement.removeEventListener('keydown', onMainPinKeydown);
-    window.formActiveCondition();
+    window.setFormActiveCondition();
   };
 
   var onMainPinMousedown = function (evt) {
