@@ -6,11 +6,9 @@
 
   window.mapPinsElements = [];
 
+  var mapPinsElement = document.querySelector('.map__pins');
 
   window.setPinsActiveCondition = function () {
-
-
-    var mapPinsElement = document.querySelector('.map__pins');
 
     var adTemplateElement = document.querySelector('#pin').content;
 
@@ -34,10 +32,6 @@
     createAdPinsFragment();
 
     window.mapPinsElements = mapPinsElement.querySelectorAll('button:not(.map__pin--main)');
-
-    for (var i = 0; i < window.mapPinsElements.length; i++) {
-      window.mapPinsElements[i].hidden = true;
-    }
 
     var pinPopUp;
 
