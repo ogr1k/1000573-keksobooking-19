@@ -36,7 +36,9 @@
   setDisableAttribute(mapSelectFieldsetElements);
 
   var setActiveCondition = function () {
-    window.setPinsActiveCondition();
+    for (var i = 0; i < window.mapPinsElements.length; i++) {
+      window.mapPinsElements[i].hidden = false;
+    }
     mainMapPinElement.removeEventListener('mousedown', onMainPinMousedown);
     mainMapPinElement.removeEventListener('keydown', onMainPinKeydown);
     window.setFormActiveCondition();

@@ -4,8 +4,11 @@
   var BUTTON_MAP_PIN_WIDTH = 50;
   var BUTTON_MAP_PIN_HEIGHT = 70;
 
-  var mapPinsElements;
+  window.mapPinsElements = [];
+
+
   window.setPinsActiveCondition = function () {
+
 
     var mapPinsElement = document.querySelector('.map__pins');
 
@@ -30,7 +33,12 @@
     };
     createAdPinsFragment();
 
-    mapPinsElements = mapPinsElement.querySelectorAll('button:not(.map__pin--main)');
+    window.mapPinsElements = mapPinsElement.querySelectorAll('button:not(.map__pin--main)');
+
+    for (var i = 0; i < window.mapPinsElements.length; i++) {
+      window.mapPinsElements[i].hidden = true;
+    }
+
     var pinPopUp;
 
     var removePopUpAndEscapeListener = function () {
@@ -46,7 +54,7 @@
     };
 
     var addClickListener = function (i) {
-      mapPinsElements[i].addEventListener('click', function () {
+      window.mapPinsElements[i].addEventListener('click', function () {
         if (pinPopUp !== undefined) {
           pinPopUp.remove();
         }
@@ -64,7 +72,7 @@
 
 
     var addPinsClickListener = function () {
-      for (var i = 0; i < mapPinsElements.length; i++) {
+      for (var i = 0; i < window.mapPinsElements.length; i++) {
         addClickListener(i);
       }
     };
