@@ -21,7 +21,6 @@
 
   var mainMapPinElement = document.querySelector('.map__pin--main');
 
-  window.ads = [];
 
   var successHandler = function (response) {
     window.ads = response;
@@ -141,5 +140,5 @@
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
   });
-
+  window.ads = [];
 })();
