@@ -1,4 +1,4 @@
-'use strict';
+/* 'use strict';
 
 (function () {
   var AD_QUANTITY = 8;
@@ -69,4 +69,4 @@
   };
   createAdsList(AD_QUANTITY);
   window.ads = interimAds;
-})();
+})(); */

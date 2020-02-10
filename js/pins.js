@@ -1,13 +1,14 @@
 'use strict';
 (function () {
   var ESC_KEY = 'Escape';
+  var BUTTON_MAP_PIN_WIDTH = 50;
+  var BUTTON_MAP_PIN_HEIGHT = 70;
+
   var mapPinsElements;
-  window.pinsActiveCondition = function () {
 
-    var BUTTON_MAP_PIN_WIDTH = 50;
-    var BUTTON_MAP_PIN_HEIGHT = 70;
+  var mapPinsElement = document.querySelector('.map__pins');
 
-    var mapPinsElement = document.querySelector('.map__pins');
+  window.setPinsActiveCondition = function () {
 
     var adTemplateElement = document.querySelector('#pin').content;
 
@@ -31,6 +32,7 @@
     createAdPinsFragment();
 
     mapPinsElements = mapPinsElement.querySelectorAll('button:not(.map__pin--main)');
+
     var pinPopUp;
 
     var removePopUpAndEscapeListener = function () {
