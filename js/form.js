@@ -13,7 +13,6 @@
   var MIN_PRICE_FOR_HOUSE = 5000;
   var MIN_PRICE_FOR_PALACE = 10000;
 
-
   var roomsOptionsToBeEnabled = {
     '1': [ONE_GEUST_OPTION_INDEX],
     '2': [TWO_GEUSTS_OPTION_INDEX, ONE_GEUST_OPTION_INDEX],
@@ -34,6 +33,9 @@
 
   var mapPinElement = document.querySelector('.map');
 
+  var adressInputElement = document.querySelector('#address');
+
+  adressInputElement.value = window.map.startAdress;
 
   var setDisableAttribute = function (elements) {
     for (var i = 0; i < elements.length; i++) {
@@ -121,21 +123,101 @@
       changeBorderColor(priceInputElement);
     };
 
-    var onInputPriceInputed = function () {
+    var onPriceInput = function () {
       changeBorderColor(priceInputElement);
     };
 
-    var onInputTitleInputed = function () {
+    var onTitleInput = function () {
       changeBorderColor(titleInputElement);
     };
+
+    var setPageDeactive = function () {
+      mapPinElement.classList.add('map--faded');
+      formMapElement.setAttribute('disabled', 'disabled');
+      formElement.classList.add('ad-form--disabled');
+      setDisableAttribute(fieldsetElements);
+      setDisableAttribute(mapSelectFieldsetElements);
+
+      for (var l = 0; l < window.mapPinsElements.length; l++) {
+        window.mapPinsElements[l].remove();
+      }
+
+      adressInputElement.value = window.map.startAdress;
+    };
+
+    var removeMessage = function (element) {
+      if (element !== null) {
+        element.remove();
+      }
+    };
+
+    var removeDocumentListeners = function () {
+      document.removeEventListener('keydown', onDocumentKeydown);
+      document.removeEventListener('click', onDocumentClick);
+    };
+
+    var onDocumentKeydown = function (evt) {
+      removeMessage(document.querySelector('.success'));
+      removeMessage(document.querySelector('.error'));
+
+      window.util.isEscEvent(evt, removeMessage);
+
+
+      removeDocumentListeners();
+    };
+
+    var onDocumentClick = function () {
+      removeMessage(document.querySelector('.success'));
+      removeMessage(document.querySelector('.error'));
+
+
+      removeDocumentListeners();
+    };
+
+    var errorButtonElement = document.querySelector('.error__button');
+
+    var onErrorButtonClick = function () {
+      removeMessage(document.querySelector('.error'));
+      removeDocumentListeners();
+      errorButtonElement.removeEventListener('click', onErrorButtonClick);
+    };
+
+    var successHandler = function () {
+      var succesTemplate = document.querySelector('#success').content;
+      var successMessage = succesTemplate.cloneNode(true);
+      document.body.appendChild(successMessage.querySelector('div'));
+      formElement.reset();
+
+      document.addEventListener('keydown', onDocumentKeydown);
+      document.addEventListener('click', onDocumentClick);
+      setPageDeactive();
+    };
+
+    var errorHandler = function () {
+      var errorTemplate = document.querySelector('#error').content;
+      var errorMessage = errorTemplate.cloneNode(true);
+      var main = document.querySelector('main');
+      main.appendChild(errorMessage.querySelector('div'));
+
+      document.addEventListener('keydown', onDocumentKeydown);
+      document.addEventListener('click', onDocumentClick);
+      errorButtonElement.addEventListener('click', onErrorButtonClick);
+    };
+
+    var onSubmitButtonClicked = function (evt) {
+      window.upload(new FormData(formElement), successHandler, errorHandler);
+      evt.preventDefault();
+    };
+
+    formElement.addEventListener('submit', onSubmitButtonClicked);
 
     roomNumberElement.addEventListener('change', onRoomNumberSelectorChanged);
     checkinSelectElement.addEventListener('change', onCheckinTimeSelectorChanged);
     checkoutSelectElement.addEventListener('change', onCheckoutTimeSelectorChanged);
     typeElement.addEventListener('change', onRoomTypeChange);
     submitButton.addEventListener('click', onSubmitButtonClick);
-    titleInputElement.addEventListener('input', onInputTitleInputed);
-    priceInputElement.addEventListener('input', onInputPriceInputed);
+    titleInputElement.addEventListener('input', onTitleInput);
+    priceInputElement.addEventListener('input', onPriceInput);
   };
 })();
 
