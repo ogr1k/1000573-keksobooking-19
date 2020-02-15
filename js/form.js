@@ -247,7 +247,7 @@
 
       var filteredTypesElements = [];
       for (var k = 0; k < window.map.ads.length; k++) {
-        if (filteredTypesElements.length > MAX_PINS_ON_MAP) {
+        if (filteredTypesElements.length >= MAX_PINS_ON_MAP) {
           break;
         }
         if (typeFilterElement.value === window.map.ads[k].offer.type) {
