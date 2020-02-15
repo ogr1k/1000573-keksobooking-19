@@ -16,6 +16,8 @@
   var START_MAIN_PIN_LEFT_POSITION = 570;
   var START_MAIN_PIN_TOP_POSITION = 375;
 
+  var MAX_PINS_ON_MAP = 5;
+
   var roomsOptionsToBeEnabled = {
     '1': [ONE_GEUST_OPTION_INDEX],
     '2': [TWO_GEUSTS_OPTION_INDEX, ONE_GEUST_OPTION_INDEX],
@@ -83,10 +85,6 @@
     for (var i = 0; i < fieldsetElements.length; i++) {
       fieldsetElements[i].removeAttribute('disabled');
     }
-    formMapElement.querySelector('fieldset').removeAttribute('disabled');
-    for (var j = 0; j < mapSelectFieldsetElements.length; j++) {
-      mapSelectFieldsetElements[j].removeAttribute('disabled');
-    }
     var onRoomNumberSelectorChanged = function () {
       disableOptions(roomsCapacityOptionsElements, roomsCapacityOptionsElements.length);
       var roomNumberValue = roomNumberElement.value;
@@ -139,8 +137,8 @@
     var mainMapPinElement = document.querySelector('.map__pin--main');
 
     var removePinsElements = function () {
-      for (var l = 0; l < window.mapPinsElements.length; l++) {
-        window.mapPinsElements[l].remove();
+      for (var l = 0; l < window.pins.mapPinsElements.length; l++) {
+        window.pins.mapPinsElements[l].remove();
       }
     };
 
@@ -162,8 +160,10 @@
 
       removePinsElements();
 
-      mainMapPinElement.addEventListener('mousedown', window.onMainPinMousedown);
-      mainMapPinElement.addEventListener('keydown', window.onMainPinKeydown);
+      document.removeEventListener('keydown', window.onDocumentKeydown);
+
+      mainMapPinElement.addEventListener('mousedown', window.map.onMainPinMousedown);
+      mainMapPinElement.addEventListener('keydown', window.map.onMainPinKeydown);
       adressInputElement.value = window.map.startAdress;
     };
 
@@ -241,20 +241,25 @@
     var typeFilterElement = document.querySelector('#housing-type');
 
     typeFilterElement.addEventListener('change', function () {
-      var filteredTypesElements = window.map.ads.filter(function (element) {
-        return element.offer.type === typeFilterElement.value;
-      });
+      var filteredTypesElements = [];
+      for (var k = 0; k < window.map.ads.length; k++) {
+        if (filteredTypesElements.length > MAX_PINS_ON_MAP) {
+          break;
+        }
+        if (typeFilterElement.value === window.map.ads[k].offer.type) {
+          filteredTypesElements.push(window.map.ads[k]);
+        }
+      }
+
 
       removePinsElements();
-
-      var slicedTypesElements = filteredTypesElements.slice(0, 5);
 
       if (window.pinPopUp !== undefined) {
         window.pinPopUp.remove();
       }
 
-      window.setPinsActiveCondition(slicedTypesElements);
-      window.mapPinsElements = mapPinsElement.querySelectorAll('button:not(.map__pin--main)');
+      window.pins.setPinsActiveCondition(filteredTypesElements);
+      window.pins.mapPinsElements = mapPinsElement.querySelectorAll('button:not(.map__pin--main)');
     });
 
     formElement.addEventListener('submit', onSubmitButtonClicked);

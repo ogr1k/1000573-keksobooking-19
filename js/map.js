@@ -17,11 +17,17 @@
 
   var mainMapPinElement = document.querySelector('.map__pin--main');
 
+  var formMapElement = document.querySelector('.map__filters');
+  var mapSelectFieldsetElements = formMapElement.querySelectorAll('select, fieldset');
+
 
   var successHandler = function (response) {
     window.map.ads = response;
-    window.setPinsActiveCondition(window.map.ads);
-    window.setFormActiveCondition();
+    window.pins.setPinsActiveCondition(window.map.ads);
+    formMapElement.querySelector('fieldset').removeAttribute('disabled');
+    for (var i = 0; i < mapSelectFieldsetElements.length; i++) {
+      mapSelectFieldsetElements[i].removeAttribute('disabled');
+    }
   };
 
   var onDocumentKeydown = function (evt) {
@@ -50,27 +56,28 @@
 
   var setActiveCondition = function () {
     window.load(successHandler, errorHandler);
+    window.setFormActiveCondition();
   };
 
-  window.onMainPinMousedown = function (evt) {
+  var onMainPinMousedown = function (evt) {
     if (evt.button === LEFT_BUTTON_MOUSE) {
       setActiveCondition();
     }
-    mainMapPinElement.removeEventListener('mousedown', window.onMainPinMousedown);
-    mainMapPinElement.removeEventListener('keydown', window.onMainPinKeydown);
+    mainMapPinElement.removeEventListener('mousedown', onMainPinMousedown);
+    mainMapPinElement.removeEventListener('keydown', onMainPinKeydown);
   };
 
-  mainMapPinElement.addEventListener('mousedown', window.onMainPinMousedown);
+  mainMapPinElement.addEventListener('mousedown', onMainPinMousedown);
 
-  window.onMainPinKeydown = function (evt) {
+  var onMainPinKeydown = function (evt) {
     if (evt.key === ENTER_KEY) {
       setActiveCondition();
     }
-    mainMapPinElement.removeEventListener('mousedown', window.onMainPinMousedown);
-    mainMapPinElement.removeEventListener('keydown', window.onMainPinKeydown);
+    mainMapPinElement.removeEventListener('mousedown', onMainPinMousedown);
+    mainMapPinElement.removeEventListener('keydown', onMainPinKeydown);
   };
 
-  mainMapPinElement.addEventListener('keydown', window.onMainPinKeydown);
+  mainMapPinElement.addEventListener('keydown', onMainPinKeydown);
 
   var blockMaxWidthForPin = MAX_BLOCK_WIDTH - BUTTON_MAIN_MAP_PIN_HALF_WIDTH;
   var blockMinWidthForPin = 0 - BUTTON_MAIN_MAP_PIN_HALF_WIDTH;
@@ -137,7 +144,9 @@
 
   window.map = {
     startAdress: (mainPinElement.offsetLeft + BUTTON_MAIN_MAP_PIN_HALF_WIDTH) + ', ' + (mainPinElement.offsetTop + MAIN_PIN_HEIGHT_WITHOUT_POINTER),
-    ads: []
+    ads: [],
+    onMainPinMousedown: onMainPinMousedown,
+    onMainPinKeydown: onDocumentKeydown,
   };
 
 
