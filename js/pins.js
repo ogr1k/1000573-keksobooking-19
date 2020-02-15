@@ -33,7 +33,7 @@
       var adsFiveElements = elements.slice(0, MAX_PINS_ON_MAP);
       window.createAdPinsFragment(adsFiveElements);
 
-      window.mapPinsElements = mapPinsElement.querySelectorAll('button:not(.map__pin--main)');
+      window.pins.mapPinsElements = mapPinsElement.querySelectorAll('button:not(.map__pin--main)');
 
       var removePopUpAndEscapeListener = function () {
         window.pinPopUp.remove();
@@ -45,25 +45,25 @@
       };
 
       var removePinsActiveClass = function () {
-        for (var i = 0; i < window.mapPinsElements.length; i++) {
+        for (var i = 0; i < window.pins.mapPinsElements.length; i++) {
           var flag = 0;
           if (flag === 1) {
             break;
           }
-          if (window.mapPinsElements[i].classList.contains('map__pin--active')) {
+          if (window.pins.mapPinsElements[i].classList.contains('map__pin--active')) {
             flag++;
-            window.mapPinsElements[i].classList.remove('map__pin--active');
+            window.pins.mapPinsElements[i].classList.remove('map__pin--active');
           }
         }
       };
 
       var addClickListener = function (i) {
-        window.mapPinsElements[i].addEventListener('click', function () {
+        window.pins.mapPinsElements[i].addEventListener('click', function () {
           if (window.pinPopUp !== undefined) {
             window.pinPopUp.remove();
           }
           removePinsActiveClass();
-          window.mapPinsElements[i].classList.add('map__pin--active');
+          window.pins.mapPinsElements[i].classList.add('map__pin--active');
           window.pinPopUp = window.getInfoAdElement(adsFiveElements[i]).children[0];
 
           document.querySelector('.map__filters-container').before(window.pinPopUp);

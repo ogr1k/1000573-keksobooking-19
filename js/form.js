@@ -80,6 +80,7 @@
 
     disableOptions(roomsCapacityOptionsElements, (roomsCapacityOptionsElements.length - 1));
 
+
     formElement.classList.remove('ad-form--disabled');
     mapPinElement.classList.remove('map--faded');
     for (var i = 0; i < fieldsetElements.length; i++) {
@@ -241,6 +242,9 @@
     var typeFilterElement = document.querySelector('#housing-type');
 
     typeFilterElement.addEventListener('change', function () {
+
+      removePinsElements();
+
       var filteredTypesElements = [];
       for (var k = 0; k < window.map.ads.length; k++) {
         if (filteredTypesElements.length > MAX_PINS_ON_MAP) {
@@ -251,8 +255,6 @@
         }
       }
 
-
-      removePinsElements();
 
       if (window.pinPopUp !== undefined) {
         window.pinPopUp.remove();

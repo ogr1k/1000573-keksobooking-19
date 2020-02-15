@@ -23,11 +23,14 @@
 
   var successHandler = function (response) {
     window.map.ads = response;
-    window.pins.setPinsActiveCondition(window.map.ads);
+
     formMapElement.querySelector('fieldset').removeAttribute('disabled');
     for (var i = 0; i < mapSelectFieldsetElements.length; i++) {
+
       mapSelectFieldsetElements[i].removeAttribute('disabled');
     }
+
+    window.pins.setPinsActiveCondition(window.map.ads);
   };
 
   var onDocumentKeydown = function (evt) {
