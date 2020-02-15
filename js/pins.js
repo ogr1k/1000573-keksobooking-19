@@ -33,8 +33,6 @@
 
     window.mapPinsElements = mapPinsElement.querySelectorAll('button:not(.map__pin--main)');
 
-    window.pinPopUp;
-
     var removePopUpAndEscapeListener = function () {
       window.pinPopUp.remove();
       document.removeEventListener('keydown', onDocumentKeydown);
