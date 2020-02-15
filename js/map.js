@@ -20,7 +20,8 @@
 
   var successHandler = function (response) {
     window.map.ads = response;
-    window.setPinsActiveCondition();
+    window.setPinsActiveCondition(window.map.ads);
+    window.setFormActiveCondition();
   };
 
   var onDocumentKeydown = function (evt) {
@@ -49,26 +50,27 @@
 
   var setActiveCondition = function () {
     window.load(successHandler, errorHandler);
-    /* mainMapPinElement.removeEventListener('mousedown', onMainPinMousedown);
-    mainMapPinElement.removeEventListener('keydown', onMainPinKeydown); */
-    window.setFormActiveCondition();
   };
 
-  var onMainPinMousedown = function (evt) {
+  window.onMainPinMousedown = function (evt) {
     if (evt.button === LEFT_BUTTON_MOUSE) {
       setActiveCondition();
     }
+    mainMapPinElement.removeEventListener('mousedown', window.onMainPinMousedown);
+    mainMapPinElement.removeEventListener('keydown', window.onMainPinKeydown);
   };
 
-  mainMapPinElement.addEventListener('mousedown', onMainPinMousedown);
+  mainMapPinElement.addEventListener('mousedown', window.onMainPinMousedown);
 
-  var onMainPinKeydown = function (evt) {
+  window.onMainPinKeydown = function (evt) {
     if (evt.key === ENTER_KEY) {
       setActiveCondition();
     }
+    mainMapPinElement.removeEventListener('mousedown', window.onMainPinMousedown);
+    mainMapPinElement.removeEventListener('keydown', window.onMainPinKeydown);
   };
 
-  mainMapPinElement.addEventListener('keydown', onMainPinKeydown);
+  mainMapPinElement.addEventListener('keydown', window.onMainPinKeydown);
 
   var blockMaxWidthForPin = MAX_BLOCK_WIDTH - BUTTON_MAIN_MAP_PIN_HALF_WIDTH;
   var blockMinWidthForPin = 0 - BUTTON_MAIN_MAP_PIN_HALF_WIDTH;
@@ -130,6 +132,7 @@
 
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
+
   });
 
   window.map = {
