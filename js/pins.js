@@ -2,7 +2,6 @@
 (function () {
   var BUTTON_MAP_PIN_WIDTH = 50;
   var BUTTON_MAP_PIN_HEIGHT = 70;
-  var MAX_PINS_ON_MAP = 5;
 
   var mapPinsElement = document.querySelector('.map__pins');
   var adTemplateElement = document.querySelector('#pin').content;
@@ -11,7 +10,6 @@
   var pinWithActiveClass;
 
   var removePinActiveClass = function () {
-    pinWithActiveClass = mapPinsElement.querySelector('.map__pin--active');
     if (pinWithActiveClass !== null) {
       pinWithActiveClass.classList.remove('map__pin--active');
     }
@@ -25,7 +23,7 @@
 
 
   window.pins = {
-    removePinPopUp: function () {
+    removePopUp: function () {
       if (pinPopUp !== undefined) {
         pinPopUp.remove();
       }
@@ -46,25 +44,27 @@
         return adElement;
       };
 
-      var createAdPinsFragment = function (adsElements) {
+      var createAdPinsFragment = function () {
         var fragment = document.createDocumentFragment();
-        for (var i = 0; i < adsElements.length; i++) {
-          fragment.appendChild(renderAdPin(adsElements[i]));
+        for (var i = 0; i < elements.length; i++) {
+          fragment.appendChild(renderAdPin(elements[i]));
         }
+        var result = Array.from(fragment.children);
         mapPinsElement.appendChild(fragment);
+        return result;
       };
-      var maxPinsElements = elements.slice(0, MAX_PINS_ON_MAP);
-      createAdPinsFragment(maxPinsElements);
+      createAdPinsFragment(elements);
 
-      window.pins.mapPinsElements = mapPinsElement.querySelectorAll('button:not(.map__pin--main)');
+      window.pins.mapPinsElements = createAdPinsFragment(elements);
 
 
       var addClickListener = function (i) {
         window.pins.mapPinsElements[i].addEventListener('click', function () {
-          window.pins.removePinPopUp();
+          window.pins.removePopUp();
+          pinWithActiveClass = mapPinsElement.querySelector('.map__pin--active');
           removePinActiveClass();
           window.pins.mapPinsElements[i].classList.add('map__pin--active');
-          pinPopUp = window.getInfoAdElement(maxPinsElements[i]).children[0];
+          pinPopUp = window.getInfoAdElement(elements[i]).children[0];
 
           filtersContainerElements.before(pinPopUp);
           var mapPopUpCloseElement = document.querySelector('.popup__close');
@@ -76,12 +76,12 @@
       };
 
 
-      var addPinsClickListener = function () {
-        for (var i = 0; i < maxPinsElements.length; i++) {
+      var addPinsClickListeners = function () {
+        for (var i = 0; i < elements.length; i++) {
           addClickListener(i);
         }
       };
-      addPinsClickListener();
+      addPinsClickListeners();
 
     }
   };

@@ -3,6 +3,7 @@
 (function () {
 
   var MAX_PINS_ON_MAP = 5;
+  var ANY_TYPE_FILTER_VALUE = 'any';
 
   var typeFilterElement = document.querySelector('#housing-type');
 
@@ -12,12 +13,12 @@
 
     var filteredTypesElements = [];
 
-    if (typeFilterElement.value === 'any') {
-      filteredTypesElements = window.map.ads;
+    if (typeFilterElement.value === ANY_TYPE_FILTER_VALUE) {
+      filteredTypesElements = window.map.ads.slice(0, MAX_PINS_ON_MAP);
     }
 
     for (var i = 0; i < window.map.ads.length; i++) {
-      if (filteredTypesElements.length === MAX_PINS_ON_MAP) {
+      if (filteredTypesElements.length >= MAX_PINS_ON_MAP) {
         break;
       }
       if (typeFilterElement.value === window.map.ads[i].offer.type) {
@@ -26,15 +27,18 @@
     }
 
 
-    window.pins.removePinPopUp();
+    window.pins.removePopUp();
 
     window.pins.setPinsActiveCondition(filteredTypesElements);
   };
 
-  typeFilterElement.addEventListener('change', onTypeFilterChanged);
   window.filter = {
-    removeTypeFilterListener: function () {
+    removeTypeListener: function () {
       typeFilterElement.removeEventListener('change', onTypeFilterChanged);
+    },
+    onTypeFilterChanged: onTypeFilterChanged,
+    addTypeListener: function () {
+      typeFilterElement.addEventListener('change', onTypeFilterChanged);
     },
   };
 })();

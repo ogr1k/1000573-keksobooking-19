@@ -30,7 +30,7 @@
       mapSelectFieldsetElements[i].removeAttribute('disabled');
     }
 
-    window.pins.setPinsActiveCondition(window.map.ads);
+    window.filter.onTypeFilterChanged();
   };
 
   var onDocumentKeydown = function (evt) {

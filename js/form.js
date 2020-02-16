@@ -38,11 +38,10 @@
 
   var adressInputElement = document.querySelector('#address');
   var resetButtonElement = document.querySelector('.ad-form__reset');
-  var errorButtonElement = document.querySelector('.error__button');
 
   var errorTemplate = document.querySelector('#error').content;
   var succesTemplate = document.querySelector('#success').content;
-
+  var errorButtonElement = errorTemplate.querySelector('.error__button');
 
   adressInputElement.value = window.map.startAdress;
 
@@ -149,7 +148,7 @@
 
       mainMapPinElement.style.cssText = 'left:' + START_MAIN_PIN_LEFT_POSITION + 'px; top: ' + START_MAIN_PIN_TOP_POSITION + 'px;';
 
-      window.pins.removePinPopUp();
+      window.pins.removePopUp();
 
       window.util.removePinsElements();
 
@@ -162,7 +161,7 @@
       roomNumberElement.removeEventListener('change', onRoomNumberSelectorChanged);
       checkinSelectElement.removeEventListener('change', onCheckinTimeSelectorChanged);
       checkoutSelectElement.removeEventListener('change', onCheckoutTimeSelectorChanged);
-      window.filter.removeTypeFilterListener();
+      window.filter.removeTypeListener();
       typeElement.removeEventListener('change', onRoomTypeChanged);
       submitButton.removeEventListener('click', onSubmitButtonClicked);
       titleInputElement.removeEventListener('input', onTitleInput);
@@ -236,6 +235,7 @@
       setPageDeactive();
     });
 
+    window.filter.addTypeListener();
     formElement.addEventListener('submit', onFormSubmitted);
     roomNumberElement.addEventListener('change', onRoomNumberSelectorChanged);
     checkinSelectElement.addEventListener('change', onCheckinTimeSelectorChanged);
