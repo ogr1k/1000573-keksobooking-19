@@ -60,7 +60,8 @@
       var addClickListener = function (i) {
         window.pins.mapPinsElements[i].addEventListener('click', function () {
           window.pins.removePopUp();
-          pinWithActiveClass = mapPinsElement.querySelector('.map__pin--active');
+
+          pinWithActiveClass = window.pins.mapPinsElements[i];
           removePinActiveClass();
           window.pins.mapPinsElements[i].classList.add('map__pin--active');
           pinPopUp = window.getInfoAdElement(elements[i]).children[0];
