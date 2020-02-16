@@ -38,6 +38,10 @@
 
   var adressInputElement = document.querySelector('#address');
   var resetButtonElement = document.querySelector('.ad-form__reset');
+  var errorButtonElement = document.querySelector('.error__button');
+
+  var errorTemplate = document.querySelector('#error').content;
+  var succesTemplate = document.querySelector('#success').content;
 
 
   adressInputElement.value = window.map.startAdress;
@@ -194,7 +198,6 @@
       removeDocumentListeners();
     };
 
-    var errorButtonElement = document.querySelector('.error__button');
 
     var onErrorButtonClick = function () {
       removeMessage(document.querySelector('.error'));
@@ -202,7 +205,6 @@
       errorButtonElement.removeEventListener('click', onErrorButtonClick);
     };
 
-    var succesTemplate = document.querySelector('#success').content;
 
     var successHandler = function () {
       var successMessage = succesTemplate.cloneNode(true);
@@ -213,7 +215,6 @@
       setPageDeactive();
     };
 
-    var errorTemplate = document.querySelector('#error').content;
 
     var errorHandler = function () {
       var errorMessage = errorTemplate.cloneNode(true);
