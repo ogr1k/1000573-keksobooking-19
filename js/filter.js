@@ -28,7 +28,6 @@
 
 
     window.pins.removePopUp();
-
     window.pins.setPinsActiveCondition(filteredTypesElements);
   };
 

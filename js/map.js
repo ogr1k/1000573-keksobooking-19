@@ -12,6 +12,8 @@
   var ENTER_KEY = 'Enter';
   var LEFT_BUTTON_MOUSE = 0;
 
+  var MAX_PINS_ON_MAP = 5;
+
   var mainPinElement = document.querySelector('.map__pin--main');
   var adressInputElement = document.querySelector('#address');
 
@@ -24,13 +26,11 @@
   var onSuccess = function (response) {
     window.map.ads = response;
 
-    formMapElement.querySelector('fieldset').removeAttribute('disabled');
     for (var i = 0; i < mapSelectFieldsetElements.length; i++) {
-
       mapSelectFieldsetElements[i].removeAttribute('disabled');
     }
 
-    window.filter.onTypeFilterChanged();
+    window.pins.setPinsActiveCondition(window.map.ads.slice(0, MAX_PINS_ON_MAP));
   };
 
   var onDocumentKeydown = function (evt) {

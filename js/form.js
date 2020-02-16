@@ -160,6 +160,7 @@
       window.filter.removeTypeListener();
       typeElement.removeEventListener('change', onRoomTypeChanged);
       submitButton.removeEventListener('click', onSubmitButtonClicked);
+      resetButtonElement.removeEventListener('click', onResetButtonClicked);
       titleInputElement.removeEventListener('input', onTitleInput);
       priceInputElement.removeEventListener('input', onPriceInput);
     };
@@ -226,10 +227,11 @@
       evt.preventDefault();
     };
 
-
-    resetButtonElement.addEventListener('click', function () {
+    var onResetButtonClicked = function () {
       setPageDeactive();
-    });
+    };
+
+    resetButtonElement.addEventListener('click', onResetButtonClicked);
 
     window.filter.addTypeListener();
     formElement.addEventListener('submit', onFormSubmitted);
