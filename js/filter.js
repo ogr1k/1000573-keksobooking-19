@@ -11,6 +11,11 @@
     window.util.removePinsElements();
 
     var filteredTypesElements = [];
+
+    if (typeFilterElement.value === 'any') {
+      filteredTypesElements = window.map.ads;
+    }
+
     for (var i = 0; i < window.map.ads.length; i++) {
       if (filteredTypesElements.length === MAX_PINS_ON_MAP) {
         break;
