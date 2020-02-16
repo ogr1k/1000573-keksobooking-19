@@ -105,35 +105,31 @@
       checkinSelectElement.value = checkoutSelectElement.value;
     };
 
+    var changeBorderColor = function (element, check, color) {
+      if (element.checkValidity() === check) {
+        element.style.borderColor = color;
+      }
+    };
 
     var onSubmitButtonClicked = function () {
-      if (!titleInputElement.checkValidity()) {
-        titleInputElement.style.borderColor = 'red';
-      }
-      if (!priceInputElement.checkValidity()) {
-        priceInputElement.style.borderColor = 'red';
-      }
+      changeBorderColor(titleInputElement, false, 'red');
+      changeBorderColor(priceInputElement, false, 'red');
     };
 
-    var changeBorderColor = function (element) {
-      if (element.checkValidity()) {
-        element.style.borderColor = 'silver';
-      }
-    };
 
     var onRoomTypeChanged = function () {
       typeValue = typeElement.value;
       priceInputElement.min = minPriceForTypes[typeValue];
       priceInputElement.placeholder = minPriceForTypes[typeValue];
-      changeBorderColor(priceInputElement);
+      changeBorderColor(priceInputElement, true, 'silver');
     };
 
     var onPriceInput = function () {
-      changeBorderColor(priceInputElement);
+      changeBorderColor(priceInputElement, true, 'silver');
     };
 
     var onTitleInput = function () {
-      changeBorderColor(titleInputElement);
+      changeBorderColor(titleInputElement, true, 'silver');
     };
 
     var setPageDeactive = function () {
@@ -205,7 +201,7 @@
     };
 
 
-    var successHandler = function () {
+    var onSuccess = function () {
       var successMessage = succesTemplate.cloneNode(true);
       document.body.appendChild(successMessage.querySelector('div'));
 
@@ -215,7 +211,7 @@
     };
 
 
-    var errorHandler = function () {
+    var onError = function () {
       var errorMessage = errorTemplate.cloneNode(true);
       var main = document.querySelector('main');
       main.appendChild(errorMessage.querySelector('div'));
@@ -226,7 +222,7 @@
     };
 
     var onFormSubmitted = function (evt) {
-      window.upload(new FormData(formElement), successHandler, errorHandler);
+      window.upload(new FormData(formElement), onSuccess, onError);
       evt.preventDefault();
     };
 

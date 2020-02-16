@@ -53,7 +53,6 @@
         mapPinsElement.appendChild(fragment);
         return result;
       };
-      createAdPinsFragment(elements);
 
       window.pins.mapPinsElements = createAdPinsFragment(elements);
 

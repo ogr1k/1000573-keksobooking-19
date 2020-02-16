@@ -21,7 +21,7 @@
   var mapSelectFieldsetElements = formMapElement.querySelectorAll('select, fieldset');
 
 
-  var successHandler = function (response) {
+  var onSuccess = function (response) {
     window.map.ads = response;
 
     formMapElement.querySelector('fieldset').removeAttribute('disabled');
@@ -41,7 +41,7 @@
     document.removeEventListener('keydown', onDocumentKeydown);
   };
 
-  var errorHandler = function (errorMessage) {
+  var onError = function (errorMessage) {
     var node = document.createElement('div');
     node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
     node.style.position = 'absolute';
@@ -58,7 +58,7 @@
 
 
   var setActiveCondition = function () {
-    window.load(successHandler, errorHandler);
+    window.load(onSuccess, onError);
     window.setFormActiveCondition();
   };
 
