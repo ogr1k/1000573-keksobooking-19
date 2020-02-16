@@ -37,7 +37,7 @@
   var mapPinElement = document.querySelector('.map');
 
   var adressInputElement = document.querySelector('#address');
-  var typeFilterElement = document.querySelector('#housing-type');
+  var resetButtonElement = document.querySelector('.ad-form__reset');
 
 
   adressInputElement.value = window.map.startAdress;
@@ -145,9 +145,7 @@
 
       mainMapPinElement.style.cssText = 'left:' + START_MAIN_PIN_LEFT_POSITION + 'px; top: ' + START_MAIN_PIN_TOP_POSITION + 'px;';
 
-      if (window.pinPopUp !== undefined) {
-        window.pinPopUp.remove();
-      }
+      window.pins.removePinPopUp();
 
       window.util.removePinsElements();
 
@@ -160,7 +158,7 @@
       roomNumberElement.removeEventListener('change', onRoomNumberSelectorChanged);
       checkinSelectElement.removeEventListener('change', onCheckinTimeSelectorChanged);
       checkoutSelectElement.removeEventListener('change', onCheckoutTimeSelectorChanged);
-      typeFilterElement.removeEventListener('change', onTypeFilterChanged);
+      window.removeTypeFilterListener();
       typeElement.removeEventListener('change', onRoomTypeChanged);
       submitButton.removeEventListener('click', onSubmitButtonClicked);
       titleInputElement.removeEventListener('input', onTitleInput);
@@ -232,35 +230,11 @@
       evt.preventDefault();
     };
 
-    var resetButtonElement = document.querySelector('.ad-form__reset');
 
     resetButtonElement.addEventListener('click', function () {
       setPageDeactive();
     });
 
-    var onTypeFilterChanged = function () {
-
-      window.util.removePinsElements();
-
-      var filteredTypesElements = [];
-      for (var k = 0; k < window.map.ads.length; k++) {
-        if (filteredTypesElements.length >= 5) {
-          break;
-        }
-        if (typeFilterElement.value === window.map.ads[k].offer.type) {
-          filteredTypesElements.push(window.map.ads[k]);
-        }
-      }
-
-
-      if (window.pinPopUp !== undefined) {
-        window.pinPopUp.remove();
-      }
-
-      window.pins.setPinsActiveCondition(filteredTypesElements);
-    };
-
-    typeFilterElement.addEventListener('change', onTypeFilterChanged);
     formElement.addEventListener('submit', onFormSubmitted);
     roomNumberElement.addEventListener('change', onRoomNumberSelectorChanged);
     checkinSelectElement.addEventListener('change', onCheckinTimeSelectorChanged);
