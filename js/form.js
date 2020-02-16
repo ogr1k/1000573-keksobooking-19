@@ -162,7 +162,7 @@
       roomNumberElement.removeEventListener('change', onRoomNumberSelectorChanged);
       checkinSelectElement.removeEventListener('change', onCheckinTimeSelectorChanged);
       checkoutSelectElement.removeEventListener('change', onCheckoutTimeSelectorChanged);
-      window.removeTypeFilterListener();
+      window.filter.removeTypeFilterListener();
       typeElement.removeEventListener('change', onRoomTypeChanged);
       submitButton.removeEventListener('click', onSubmitButtonClicked);
       titleInputElement.removeEventListener('input', onTitleInput);
