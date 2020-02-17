@@ -168,7 +168,7 @@
     };
 
     var removeMessage = function (element) {
-      if (element !== null) {
+      if (element !== null && element !== undefined) {
         element.remove();
       }
     };
@@ -184,7 +184,6 @@
       removeMessage(document.querySelector('.error'));
 
       window.util.isEscEvent(evt, removeMessage);
-
 
       removeDocumentListeners();
     };
