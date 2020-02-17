@@ -180,12 +180,11 @@
     };
 
     var onDocumentKeydown = function (evt) {
-      removeMessage(document.querySelector('.success'));
-      removeMessage(document.querySelector('.error'));
-
-      window.util.isEscEvent(evt, removeMessage);
-
-      removeDocumentListeners();
+      if (evt.key === window.constants.ESC_KEY) {
+        removeMessage(document.querySelector('.success'));
+        removeMessage(document.querySelector('.error'));
+        removeDocumentListeners();
+      }
     };
 
     var checkClickEvent = function (evt, selectorMessageText, selectorMessageBlock) {

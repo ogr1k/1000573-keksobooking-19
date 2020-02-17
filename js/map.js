@@ -12,7 +12,6 @@
   var ENTER_KEY = 'Enter';
   var LEFT_BUTTON_MOUSE = 0;
 
-  var MAX_PINS_ON_MAP = 5;
 
   var mainPinElement = document.querySelector('.map__pin--main');
   var adressInputElement = document.querySelector('#address');
@@ -36,7 +35,7 @@
       }
     }
 
-    window.pins.setPinsActiveCondition(window.map.adsWithOfferField.slice(0, MAX_PINS_ON_MAP));
+    window.pins.setPinsActiveCondition(window.map.adsWithOfferField.slice(0, window.constants.MAX_PINS_ON_MAP));
   };
 
   var onDocumentKeydown = function (evt) {
