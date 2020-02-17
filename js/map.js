@@ -24,13 +24,19 @@
 
 
   var onSuccess = function (response) {
-    window.map.ads = response;
+    var ads = response;
 
     for (var i = 0; i < mapSelectFieldsetElements.length; i++) {
       mapSelectFieldsetElements[i].removeAttribute('disabled');
     }
 
-    window.pins.setPinsActiveCondition(window.map.ads.slice(0, MAX_PINS_ON_MAP));
+    for (var j = 0; j < ads.length; j++) {
+      if (ads[j].offer !== undefined) {
+        window.map.adsWithOfferField.push(ads[j]);
+      }
+    }
+
+    window.pins.setPinsActiveCondition(window.map.adsWithOfferField.slice(0, MAX_PINS_ON_MAP));
   };
 
   var onDocumentKeydown = function (evt) {
@@ -147,7 +153,7 @@
 
   window.map = {
     startAdress: (mainPinElement.offsetLeft + BUTTON_MAIN_MAP_PIN_HALF_WIDTH) + ', ' + (mainPinElement.offsetTop + MAIN_PIN_HEIGHT_WITHOUT_POINTER),
-    ads: [],
+    adsWithOfferField: [],
     onMainPinMousedown: onMainPinMousedown,
     onMainPinKeydown: onDocumentKeydown,
   };

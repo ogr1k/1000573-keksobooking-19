@@ -14,15 +14,15 @@
     var filteredTypesElements = [];
 
     if (typeFilterElement.value === ANY_TYPE_FILTER_VALUE) {
-      filteredTypesElements = window.map.ads.slice(0, MAX_PINS_ON_MAP);
+      filteredTypesElements = window.map.adsWithOfferField.slice(0, MAX_PINS_ON_MAP);
     }
 
-    for (var i = 0; i < window.map.ads.length; i++) {
+    for (var i = 0; i < window.map.adsWithOfferField.length; i++) {
       if (filteredTypesElements.length >= MAX_PINS_ON_MAP) {
         break;
       }
-      if (typeFilterElement.value === window.map.ads[i].offer.type) {
-        filteredTypesElements.push(window.map.ads[i]);
+      if (typeFilterElement.value === window.map.adsWithOfferField[i].offer.type) {
+        filteredTypesElements.push(window.map.adsWithOfferField[i]);
       }
     }
 

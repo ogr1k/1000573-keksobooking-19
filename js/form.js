@@ -43,6 +43,8 @@
   var succesTemplate = document.querySelector('#success').content;
   var errorButtonElement = errorTemplate.querySelector('.error__button');
 
+  var main = document.querySelector('main');
+
   adressInputElement.value = window.map.startAdress;
 
   var setDisableAttribute = function (elements) {
@@ -173,7 +175,8 @@
 
     var removeDocumentListeners = function () {
       document.removeEventListener('keydown', onDocumentKeydown);
-      document.removeEventListener('click', onDocumentClick);
+      document.removeEventListener('click', onDocumentClickSucccesCase);
+      document.removeEventListener('click', onDocumentClickErrorCase);
     };
 
     var onDocumentKeydown = function (evt) {
@@ -186,12 +189,25 @@
       removeDocumentListeners();
     };
 
-    var onDocumentClick = function () {
-      removeMessage(document.querySelector('.success'));
-      removeMessage(document.querySelector('.error'));
+    var checkClickEvent = function (evt, selectorMessageText, selectorMessageBlock) {
+      var messageText = document.querySelector(selectorMessageText);
+      var isClickInside = messageText.contains(evt.target);
 
+      if (!isClickInside) {
+        removeMessage(document.querySelector(selectorMessageBlock));
+        removeDocumentListeners();
+      }
 
-      removeDocumentListeners();
+    };
+
+    var onDocumentClickSucccesCase = function (evt) {
+
+      checkClickEvent(evt, '.success__message', '.success');
+    };
+
+    var onDocumentClickErrorCase = function (evt) {
+
+      checkClickEvent(evt, '.error__message', '.error');
     };
 
 
@@ -204,21 +220,20 @@
 
     var onSuccess = function () {
       var successMessage = succesTemplate.cloneNode(true);
-      document.body.appendChild(successMessage.querySelector('div'));
+      main.appendChild(successMessage.querySelector('div'));
 
       document.addEventListener('keydown', onDocumentKeydown);
-      document.addEventListener('click', onDocumentClick);
+      document.addEventListener('click', onDocumentClickSucccesCase);
       setPageDeactive();
     };
 
 
     var onError = function () {
       var errorMessage = errorTemplate.cloneNode(true);
-      var main = document.querySelector('main');
       main.appendChild(errorMessage.querySelector('div'));
 
       document.addEventListener('keydown', onDocumentKeydown);
-      document.addEventListener('click', onDocumentClick);
+      document.addEventListener('click', onDocumentClickErrorCase);
       errorButtonElement.addEventListener('click', onErrorButtonClick);
     };
 
