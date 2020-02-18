@@ -159,7 +159,7 @@
       roomNumberElement.removeEventListener('change', onRoomNumberSelectorChanged);
       checkinSelectElement.removeEventListener('change', onCheckinTimeSelectorChanged);
       checkoutSelectElement.removeEventListener('change', onCheckoutTimeSelectorChanged);
-      window.filter.removeTypeListener();
+      window.filter.removeListeners();
       typeElement.removeEventListener('change', onRoomTypeChanged);
       submitButton.removeEventListener('click', onSubmitButtonClicked);
       resetButtonElement.removeEventListener('click', onResetButtonClicked);
@@ -174,14 +174,21 @@
     };
 
     var removeDocumentListeners = function () {
-      document.removeEventListener('keydown', onDocumentKeydown);
+      document.removeEventListener('keydown', onDocumentKeydownErrorCase);
+      document.removeEventListener('keydown', onDocumentKeydownSuccesCase);
       document.removeEventListener('click', onDocumentClickSucccesCase);
       document.removeEventListener('click', onDocumentClickErrorCase);
     };
 
-    var onDocumentKeydown = function (evt) {
+    var onDocumentKeydownSuccesCase = function (evt) {
       if (evt.key === window.constants.ESC_KEY) {
         removeMessage(document.querySelector('.success'));
+        removeDocumentListeners();
+      }
+    };
+
+    var onDocumentKeydownErrorCase = function (evt) {
+      if (evt.key === window.constants.ESC_KEY) {
         removeMessage(document.querySelector('.error'));
         removeDocumentListeners();
       }
@@ -220,7 +227,7 @@
       var successMessage = succesTemplate.cloneNode(true);
       main.appendChild(successMessage.querySelector('div'));
 
-      document.addEventListener('keydown', onDocumentKeydown);
+      document.addEventListener('keydown', onDocumentKeydownSuccesCase);
       document.addEventListener('click', onDocumentClickSucccesCase);
       setPageDeactive();
     };
@@ -230,7 +237,7 @@
       var errorMessage = errorTemplate.cloneNode(true);
       main.appendChild(errorMessage.querySelector('div'));
 
-      document.addEventListener('keydown', onDocumentKeydown);
+      document.addEventListener('keydown', onDocumentKeydownErrorCase);
       document.addEventListener('click', onDocumentClickErrorCase);
       errorButtonElement.addEventListener('click', onErrorButtonClick);
     };
@@ -246,7 +253,7 @@
 
     resetButtonElement.addEventListener('click', onResetButtonClicked);
 
-    window.filter.addTypeListener();
+    window.filter.addListeners();
     formElement.addEventListener('submit', onFormSubmitted);
     roomNumberElement.addEventListener('change', onRoomNumberSelectorChanged);
     checkinSelectElement.addEventListener('change', onCheckinTimeSelectorChanged);
