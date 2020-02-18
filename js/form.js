@@ -246,9 +246,7 @@
 
     resetButtonElement.addEventListener('click', onResetButtonClicked);
 
-    window.filter.addTypeListener();
-    window.filter.addPriceListener();
-    window.filter.addRoomListener();
+    window.filter.addFilterListeners();
     formElement.addEventListener('submit', onFormSubmitted);
     roomNumberElement.addEventListener('change', onRoomNumberSelectorChanged);
     checkinSelectElement.addEventListener('change', onCheckinTimeSelectorChanged);

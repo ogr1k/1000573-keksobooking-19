@@ -8,7 +8,101 @@
   var typeFilterElement = document.querySelector('#housing-type');
   var priceFilterElement = document.querySelector('#housing-price');
   var roomFilterElement = document.querySelector('#housing-rooms');
-  var filteredTypesElements = [];
+  var geustFilterElement = document.querySelector('#housing-guests');
+  var wifiInputlement = document.querySelector('#filter-wifi');
+  var dishWashFilterElement = document.querySelector('#filter-dishwasher');
+  var parkingFilterElement = document.querySelector('#filter-parking');
+  var washerFilterElement = document.querySelector('#filter-washer');
+  var elevatorFilterElement = document.querySelector('#filter-elevator');
+  var conditionerFilterElement = document.querySelector('#filter-conditioner');
+
+  var filteredElements = [];
+
+  var pushElement = function (element) {
+    filteredElements.push(element);
+  };
+
+  var setCheckboxesFilter = function (element, filterElement, action) {
+    if (filterElement.checked) {
+      for (var i = 0; i < element.offer.features.length; i++) {
+        if (element.offer.features[i] === filterElement.value) {
+          action(element);
+          break;
+        }
+      }
+    } else {
+      action(element);
+    }
+  };
+
+  var setConditionerFilter = function (element) {
+    setCheckboxesFilter(element, conditionerFilterElement, pushElement);
+  };
+
+  var setElevatorFilter = function (element) {
+    setCheckboxesFilter(element, elevatorFilterElement, setConditionerFilter);
+  };
+
+  var setWasherFilter = function (element) {
+    setCheckboxesFilter(element, washerFilterElement, setElevatorFilter);
+  };
+
+
+  var setParkingFilter = function (element) {
+
+    setCheckboxesFilter(element, parkingFilterElement, setWasherFilter);
+  };
+
+
+  var setDishWashFilter = function (element) {
+
+    setCheckboxesFilter(element, dishWashFilterElement, setParkingFilter);
+  };
+
+  var setWifiFilter = function (element) {
+    setCheckboxesFilter(element, wifiInputlement, setDishWashFilter);
+  };
+
+  var setGuestFilter = function (element) {
+    if (geustFilterElement.value === 'any') {
+      setWifiFilter(element);
+    }
+
+
+    if (Number(geustFilterElement.value) === element.offer.guests) {
+      setWifiFilter(element);
+    }
+  };
+
+
+  var setRoomFilter = function (element) {
+    if (roomFilterElement.value === 'any') {
+      setGuestFilter(element);
+    }
+
+
+    if (Number(roomFilterElement.value) === element.offer.rooms) {
+      setGuestFilter(element);
+    }
+  };
+
+  var setPriceFilter = function (element) {
+
+    if (priceFilterElement.value === 'any') {
+      setRoomFilter(element);
+    }
+    if (priceFilterElement.value === 'low' && element.offer.price <= 10000) {
+      setRoomFilter(element);
+    }
+    if (priceFilterElement.value === 'high' && element.offer.price >= 50000) {
+      setRoomFilter(element);
+    }
+    if (priceFilterElement.value === 'middle' && element.offer.price < 50000 && element.offer.price > 10000) {
+      setRoomFilter(element);
+    }
+
+  };
+
 
   var changer = function () {
 
@@ -16,79 +110,30 @@
 
     var setTypeFilter = function () {
 
-      if (typeFilterElement.value === ANY_TYPE_FILTER_VALUE) {
-        filteredTypesElements = window.map.adsWithOfferField;
-      }
-
       for (var i = 0; i < window.map.adsWithOfferField.length; i++) {
-        // if (filteredTypesElements.length >= MAX_PINS_ON_MAP) {
-        //   break;
-        // }
+        if (filteredElements.length >= MAX_PINS_ON_MAP) {
+          break;
+        }
+
+        if (typeFilterElement.value === ANY_TYPE_FILTER_VALUE) {
+
+          setPriceFilter(window.map.adsWithOfferField[i]);
+        }
+
         if (typeFilterElement.value === window.map.adsWithOfferField[i].offer.type) {
-          if (priceFilterElement.value !== 'any') {
-            filteredTypesElements.push(window.map.adsWithOfferField[i]);
-          }
-          if (priceFilterElement.value === 'low' && window.map.adsWithOfferField[i].offer.price <= 10000) {
-            filteredTypesElements.push(window.map.adsWithOfferField[i]);
-          }
-          if (priceFilterElement.value === 'high' && window.map.adsWithOfferField[i].offer.price >= 50000) {
-            filteredTypesElements.push(window.map.adsWithOfferField[i]);
-          }
-          if (priceFilterElement.value === 'middle' && window.map.adsWithOfferField[i].offer.price < 50000 && filteredTypesElements[i].offer.price > 10000) {
-            filteredTypesElements.push(window.map.adsWithOfferField[i]);
-          }
+
+          setPriceFilter(window.map.adsWithOfferField[i]);
+
         }
       }
     };
 
     setTypeFilter();
-    // // / Фильтр по цене
-    //
-    //
-    // var setPriceFilter = function () {
-    //   var filtered1 = [];
-    //   for (var i = 0; i < filteredTypesElements.length; i++) {
-    //     if (priceFilterElement.value === 'low' && filteredTypesElements[i].offer.price <= 10000) {
-    //       filtered1.push(filteredTypesElements[i]);
-    //     }
-    //
-    //     if (priceFilterElement.value === 'high' && filteredTypesElements[i].offer.price >= 50000) {
-    //       filtered1.push(filteredTypesElements[i]);
-    //     }
-    //
-    //     if (priceFilterElement.value === 'middle' && filteredTypesElements[i].offer.price < 50000 && filteredTypesElements[i].offer.price > 10000) {
-    //       filtered1.push(filteredTypesElements[i]);
-    //     }
-    //   }
-    //
-    //   if (priceFilterElement.value !== 'any') {
-    //     filteredTypesElements = filtered1;
-    //   }
-    //
-    // };
-    //
-    // setPriceFilter();
-    //
-    // // Фильтр комнат
-    //
-    // var setRoomFilter = function () {
-    //   var roomsFilterElements = [];
-    //   for (var i = 0; i < filteredTypesElements.length; i++) {
-    //     if (Number(roomFilterElement.value) === filteredTypesElements[i].offer.rooms) {
-    //       roomsFilterElements.push(filteredTypesElements[i]);
-    //     }
-    //   }
-    //
-    //   if (roomFilterElement.value !== 'any') {
-    //     filteredTypesElements = roomsFilterElements;
-    //   }
-    // };
-    // setRoomFilter();
 
     window.pins.removePopUp();
-    window.pins.setPinsActiveCondition(filteredTypesElements.splice(0, MAX_PINS_ON_MAP));
+    window.pins.setPinsActiveCondition(filteredElements);
 
-    filteredTypesElements = [];
+    filteredElements = [];
   };
 
   var onTypeFilterChanged = function () {
@@ -103,20 +148,51 @@
     changer();
   };
 
+  var onGeustFilterChanged = function () {
+    changer();
+  };
+
+  var onWifiFilterChecked = function () {
+    changer();
+  };
+
+  var onDishwashFilterChecked = function () {
+    changer();
+  };
+
+  var onParkingFilterChecked = function () {
+    changer();
+  };
+
+  var onWasherFilterChecked = function () {
+    changer();
+  };
+
+  var onElevatorFilterChecked = function () {
+    changer();
+  };
+
+  var onConditionerFilterChecked = function () {
+    changer();
+  };
 
   window.filter = {
     removeTypeListener: function () {
       typeFilterElement.removeEventListener('change', onTypeFilterChanged);
     },
     onTypeFilterChanged: onTypeFilterChanged,
-    addTypeListener: function () {
+
+    addFilterListeners: function () {
       typeFilterElement.addEventListener('change', onTypeFilterChanged);
-    },
-    addPriceListener: function () {
       priceFilterElement.addEventListener('change', onPriceFilterChanged);
-    },
-    addRoomListener: function () {
       roomFilterElement.addEventListener('change', onRoomFilterChanged);
+      geustFilterElement.addEventListener('change', onGeustFilterChanged);
+      wifiInputlement.addEventListener('change', onWifiFilterChecked);
+      dishWashFilterElement.addEventListener('change', onDishwashFilterChecked);
+      parkingFilterElement.addEventListener('change', onParkingFilterChecked);
+      washerFilterElement.addEventListener('change', onWasherFilterChecked);
+      elevatorFilterElement.addEventListener('change', onElevatorFilterChecked);
+      conditionerFilterElement.addEventListener('change', onConditionerFilterChecked);
     }
   };
 })();
