@@ -2,8 +2,10 @@
 
 (function () {
 
-  var MAX_PINS_ON_MAP = 5;
   var ANY_TYPE_FILTER_VALUE = 'any';
+  var MIDDLE_PRICE_FILTER_VALUE = 'middle';
+  var HIGH_PRICE_FILTER_VALUE = 'high';
+  var LOW_PRICE_FILTER_VALUE = 'low';
 
   var typeFilterElement = document.querySelector('#housing-type');
   var priceFilterElement = document.querySelector('#housing-price');
@@ -64,7 +66,7 @@
   };
 
   var setGuestFilter = function (element) {
-    if (geustFilterElement.value === 'any') {
+    if (geustFilterElement.value === ANY_TYPE_FILTER_VALUE) {
       setWifiFilter(element);
     }
 
@@ -76,7 +78,7 @@
 
 
   var setRoomFilter = function (element) {
-    if (roomFilterElement.value === 'any') {
+    if (roomFilterElement.value === ANY_TYPE_FILTER_VALUE) {
       setGuestFilter(element);
     }
 
@@ -88,101 +90,95 @@
 
   var setPriceFilter = function (element) {
 
-    if (priceFilterElement.value === 'any') {
+    if (priceFilterElement.value === ANY_TYPE_FILTER_VALUE) {
       setRoomFilter(element);
     }
-    if (priceFilterElement.value === 'low' && element.offer.price <= 10000) {
+    if (priceFilterElement.value === LOW_PRICE_FILTER_VALUE && element.offer.price <= 10000) {
       setRoomFilter(element);
     }
-    if (priceFilterElement.value === 'high' && element.offer.price >= 50000) {
+    if (priceFilterElement.value === HIGH_PRICE_FILTER_VALUE && element.offer.price >= 50000) {
       setRoomFilter(element);
     }
-    if (priceFilterElement.value === 'middle' && element.offer.price < 50000 && element.offer.price > 10000) {
+    if (priceFilterElement.value === MIDDLE_PRICE_FILTER_VALUE && element.offer.price < 50000 && element.offer.price > 10000) {
       setRoomFilter(element);
     }
 
   };
 
 
-  var changer = function () {
+  var setFilterContainer = function () {
 
     window.util.removePinsElements();
 
-    var setTypeFilter = function () {
 
-      for (var i = 0; i < window.map.adsWithOfferField.length; i++) {
-        if (filteredElements.length >= MAX_PINS_ON_MAP) {
-          break;
-        }
-
-        if (typeFilterElement.value === ANY_TYPE_FILTER_VALUE) {
-
-          setPriceFilter(window.map.adsWithOfferField[i]);
-        }
-
-        if (typeFilterElement.value === window.map.adsWithOfferField[i].offer.type) {
-
-          setPriceFilter(window.map.adsWithOfferField[i]);
-
-        }
+    for (var i = 0; i < window.map.adsWithOfferField.length; i++) {
+      if (filteredElements.length >= window.constants.MAX_PINS_ON_MAP) {
+        break;
       }
-    };
 
-    setTypeFilter();
+      if (typeFilterElement.value === ANY_TYPE_FILTER_VALUE) {
+
+        setPriceFilter(window.map.adsWithOfferField[i]);
+      }
+
+      if (typeFilterElement.value === window.map.adsWithOfferField[i].offer.type) {
+
+        setPriceFilter(window.map.adsWithOfferField[i]);
+
+      }
+    }
+
 
     window.pins.removePopUp();
     window.pins.setPinsActiveCondition(filteredElements);
 
+
     filteredElements = [];
   };
 
-  var onTypeFilterChanged = function () {
-    changer();
-  };
 
-  var onPriceFilterChanged = function () {
-    changer();
-  };
+  var onTypeFilterChanged = window.debounce(function () {
+    setFilterContainer();
+  });
 
-  var onRoomFilterChanged = function () {
-    changer();
-  };
+  var onPriceFilterChanged = window.debounce(function () {
+    setFilterContainer();
+  });
 
-  var onGeustFilterChanged = function () {
-    changer();
-  };
+  var onRoomFilterChanged = window.debounce(function () {
+    setFilterContainer();
+  });
 
-  var onWifiFilterChecked = function () {
-    changer();
-  };
+  var onGeustFilterChanged = window.debounce(function () {
+    setFilterContainer();
+  });
 
-  var onDishwashFilterChecked = function () {
-    changer();
-  };
+  var onWifiFilterChecked = window.debounce(function () {
+    setFilterContainer();
+  });
 
-  var onParkingFilterChecked = function () {
-    changer();
-  };
+  var onDishwashFilterChecked = window.debounce(function () {
+    setFilterContainer();
+  });
 
-  var onWasherFilterChecked = function () {
-    changer();
-  };
+  var onParkingFilterChecked = window.debounce(function () {
+    setFilterContainer();
+  });
 
-  var onElevatorFilterChecked = function () {
-    changer();
-  };
+  var onWasherFilterChecked = window.debounce(function () {
+    setFilterContainer();
+  });
 
-  var onConditionerFilterChecked = function () {
-    changer();
-  };
+  var onElevatorFilterChecked = window.debounce(function () {
+    setFilterContainer();
+  });
+
+  var onConditionerFilterChecked = window.debounce(function () {
+    setFilterContainer();
+  });
 
   window.filter = {
-    removeTypeListener: function () {
-      typeFilterElement.removeEventListener('change', onTypeFilterChanged);
-    },
-    onTypeFilterChanged: onTypeFilterChanged,
-
-    addFilterListeners: function () {
+    addListeners: function () {
       typeFilterElement.addEventListener('change', onTypeFilterChanged);
       priceFilterElement.addEventListener('change', onPriceFilterChanged);
       roomFilterElement.addEventListener('change', onRoomFilterChanged);
@@ -193,6 +189,18 @@
       washerFilterElement.addEventListener('change', onWasherFilterChecked);
       elevatorFilterElement.addEventListener('change', onElevatorFilterChecked);
       conditionerFilterElement.addEventListener('change', onConditionerFilterChecked);
+    },
+    removeListeners: function () {
+      typeFilterElement.removeEventListener('change', onTypeFilterChanged);
+      priceFilterElement.removeEventListener('change', onPriceFilterChanged);
+      roomFilterElement.removeEventListener('change', onRoomFilterChanged);
+      geustFilterElement.removeEventListener('change', onGeustFilterChanged);
+      wifiInputlement.removeEventListener('change', onWifiFilterChecked);
+      dishWashFilterElement.removeEventListener('change', onDishwashFilterChecked);
+      parkingFilterElement.removeEventListener('change', onParkingFilterChecked);
+      washerFilterElement.removeEventListener('change', onWasherFilterChecked);
+      elevatorFilterElement.removeEventListener('change', onElevatorFilterChecked);
+      conditionerFilterElement.removeEventListener('change', onConditionerFilterChecked);
     }
   };
 })();
