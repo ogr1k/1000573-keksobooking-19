@@ -16,6 +16,12 @@
   var START_MAIN_PIN_LEFT_POSITION = 570;
   var START_MAIN_PIN_TOP_POSITION = 375;
 
+  var UPLOAD_URL = 'https://js.dump.academy/keksobooking';
+  var UPLOAD_METHOD = 'POST';
+
+  var DEFAULT_FORM_AVATAR_IMAGE = 'img/muffin-grey.svg';
+
+
   var roomsOptionsToBeEnabled = {
     '1': [ONE_GEUST_OPTION_INDEX],
     '2': [TWO_GEUSTS_OPTION_INDEX, ONE_GEUST_OPTION_INDEX],
@@ -42,6 +48,9 @@
   var errorTemplate = document.querySelector('#error').content;
   var succesTemplate = document.querySelector('#success').content;
   var errorButtonElement = errorTemplate.querySelector('.error__button');
+
+  var previewPhotoElement = document.querySelector('.ad-form__photo');
+  var previewAvatarElement = document.querySelector('.ad-form-header__preview');
 
   var main = document.querySelector('main');
 
@@ -145,6 +154,8 @@
       formElement.reset();
 
       mainMapPinElement.style.cssText = 'left:' + START_MAIN_PIN_LEFT_POSITION + 'px; top: ' + START_MAIN_PIN_TOP_POSITION + 'px;';
+      previewPhotoElement.querySelector('img').hidden = true;
+      previewAvatarElement.querySelector('img').src = DEFAULT_FORM_AVATAR_IMAGE;
 
       window.pins.removePopUp();
 
@@ -159,12 +170,13 @@
       roomNumberElement.removeEventListener('change', onRoomNumberSelectorChanged);
       checkinSelectElement.removeEventListener('change', onCheckinTimeSelectorChanged);
       checkoutSelectElement.removeEventListener('change', onCheckoutTimeSelectorChanged);
-      window.filter.removeListeners();
+      window.filter.removeListener();
       typeElement.removeEventListener('change', onRoomTypeChanged);
       submitButton.removeEventListener('click', onSubmitButtonClicked);
       resetButtonElement.removeEventListener('click', onResetButtonClicked);
       titleInputElement.removeEventListener('input', onTitleInput);
       priceInputElement.removeEventListener('input', onPriceInput);
+      window.photoAvatarLoad.removeListeners();
     };
 
     var removeMessage = function (element) {
@@ -243,7 +255,7 @@
     };
 
     var onFormSubmitted = function (evt) {
-      window.upload(new FormData(formElement), onSuccess, onError);
+      window.request(onSuccess, onError, UPLOAD_URL, UPLOAD_METHOD, new FormData(formElement));
       evt.preventDefault();
     };
 
@@ -253,7 +265,8 @@
 
     resetButtonElement.addEventListener('click', onResetButtonClicked);
 
-    window.filter.addListeners();
+    window.photoAvatarLoad.addListeners();
+    window.filter.addListener();
     formElement.addEventListener('submit', onFormSubmitted);
     roomNumberElement.addEventListener('change', onRoomNumberSelectorChanged);
     checkinSelectElement.addEventListener('change', onCheckinTimeSelectorChanged);

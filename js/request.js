@@ -2,10 +2,7 @@
 
 (function () {
 
-  var URL = 'https://js.dump.academy/keksobooking/data';
-
-
-  window.load = function (onSuccess, onError) {
+  window.request = function (onSuccess, onError, url, method, data) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
 
@@ -13,14 +10,14 @@
       if (xhr.status === 200) {
         onSuccess(xhr.response);
       } else {
-        onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
+        onError();
       }
     });
     xhr.addEventListener('error', function () {
-      onError('Произошла ошибка соединения');
+      onError();
     });
 
-    xhr.open('GET', URL);
-    xhr.send();
+    xhr.open(method, url);
+    xhr.send(data);
   };
 })();

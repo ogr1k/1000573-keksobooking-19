@@ -12,6 +12,8 @@
   var ENTER_KEY = 'Enter';
   var LEFT_BUTTON_MOUSE = 0;
 
+  var LOAD_URL = 'https://js.dump.academy/keksobooking/data';
+  var LOAD_METHOD = 'GET';
 
   var mainPinElement = document.querySelector('.map__pin--main');
   var adressInputElement = document.querySelector('#address');
@@ -46,7 +48,8 @@
     document.removeEventListener('keydown', onDocumentKeydown);
   };
 
-  var onError = function (errorMessage) {
+  var onError = function () {
+    var errorMessage = 'Произошла Ошибка соединения';
     var node = document.createElement('div');
     node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
     node.style.position = 'absolute';
@@ -63,7 +66,7 @@
 
 
   var setActiveCondition = function () {
-    window.load(onSuccess, onError);
+    window.request(onSuccess, onError, LOAD_URL, LOAD_METHOD);
     window.setFormActiveCondition();
   };
 

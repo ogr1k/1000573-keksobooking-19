@@ -17,6 +17,7 @@
   var washerFilterElement = document.querySelector('#filter-washer');
   var elevatorFilterElement = document.querySelector('#filter-elevator');
   var conditionerFilterElement = document.querySelector('#filter-conditioner');
+  var formFilterElement = document.querySelector('.map__filters');
 
   var filteredElements = [];
 
@@ -116,15 +117,9 @@
         break;
       }
 
-      if (typeFilterElement.value === ANY_TYPE_FILTER_VALUE) {
+      if (typeFilterElement.value === ANY_TYPE_FILTER_VALUE || typeFilterElement.value === window.map.adsWithOfferField[i].offer.type) {
 
         setPriceFilter(window.map.adsWithOfferField[i]);
-      }
-
-      if (typeFilterElement.value === window.map.adsWithOfferField[i].offer.type) {
-
-        setPriceFilter(window.map.adsWithOfferField[i]);
-
       }
     }
 
@@ -136,71 +131,18 @@
     filteredElements = [];
   };
 
-
-  var onTypeFilterChanged = window.debounce(function () {
+  var onFormFilterChanged = window.debounce(function () {
     setFilterContainer();
   });
 
-  var onPriceFilterChanged = window.debounce(function () {
-    setFilterContainer();
-  });
-
-  var onRoomFilterChanged = window.debounce(function () {
-    setFilterContainer();
-  });
-
-  var onGeustFilterChanged = window.debounce(function () {
-    setFilterContainer();
-  });
-
-  var onWifiFilterChecked = window.debounce(function () {
-    setFilterContainer();
-  });
-
-  var onDishwashFilterChecked = window.debounce(function () {
-    setFilterContainer();
-  });
-
-  var onParkingFilterChecked = window.debounce(function () {
-    setFilterContainer();
-  });
-
-  var onWasherFilterChecked = window.debounce(function () {
-    setFilterContainer();
-  });
-
-  var onElevatorFilterChecked = window.debounce(function () {
-    setFilterContainer();
-  });
-
-  var onConditionerFilterChecked = window.debounce(function () {
-    setFilterContainer();
-  });
 
   window.filter = {
-    addListeners: function () {
-      typeFilterElement.addEventListener('change', onTypeFilterChanged);
-      priceFilterElement.addEventListener('change', onPriceFilterChanged);
-      roomFilterElement.addEventListener('change', onRoomFilterChanged);
-      geustFilterElement.addEventListener('change', onGeustFilterChanged);
-      wifiInputlement.addEventListener('change', onWifiFilterChecked);
-      dishWashFilterElement.addEventListener('change', onDishwashFilterChecked);
-      parkingFilterElement.addEventListener('change', onParkingFilterChecked);
-      washerFilterElement.addEventListener('change', onWasherFilterChecked);
-      elevatorFilterElement.addEventListener('change', onElevatorFilterChecked);
-      conditionerFilterElement.addEventListener('change', onConditionerFilterChecked);
+    addListener: function () {
+      formFilterElement.addEventListener('change', onFormFilterChanged);
+
     },
-    removeListeners: function () {
-      typeFilterElement.removeEventListener('change', onTypeFilterChanged);
-      priceFilterElement.removeEventListener('change', onPriceFilterChanged);
-      roomFilterElement.removeEventListener('change', onRoomFilterChanged);
-      geustFilterElement.removeEventListener('change', onGeustFilterChanged);
-      wifiInputlement.removeEventListener('change', onWifiFilterChecked);
-      dishWashFilterElement.removeEventListener('change', onDishwashFilterChecked);
-      parkingFilterElement.removeEventListener('change', onParkingFilterChecked);
-      washerFilterElement.removeEventListener('change', onWasherFilterChecked);
-      elevatorFilterElement.removeEventListener('change', onElevatorFilterChecked);
-      conditionerFilterElement.removeEventListener('change', onConditionerFilterChecked);
+    removeListener: function () {
+      formFilterElement.removeEventListener('change', onFormFilterChanged);
     }
   };
 })();
