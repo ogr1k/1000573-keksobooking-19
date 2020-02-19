@@ -6,8 +6,8 @@
   var BUTTON_MAIN_MAP_PIN_HALF_WIDTH = 32;
   var MAX_BLOCK_WIDTH = 1200;
   var MAIN_PIN_HEIGHT_WITHOUT_POINTER = 31;
-  var MAX_AVAILABLE_Y_ADRESS = 630;
-  var MIN_AVAILABLE_Y_ADRESS = 130;
+  var MAX_AVAILABLE_Y_ADDRESS = 630;
+  var MIN_AVAILABLE_Y_ADDRESS = 130;
 
   var ENTER_KEY = 'Enter';
   var LEFT_BUTTON_MOUSE = 0;
@@ -94,8 +94,8 @@
   var blockMinWidthForPin = 0 - BUTTON_MAIN_MAP_PIN_HALF_WIDTH;
 
 
-  var blockMaxHeightForPin = MAX_AVAILABLE_Y_ADRESS - MAIN_MAP_PIN_AND_POINTER_HEIGHT;
-  var blockMinHeightForPin = MIN_AVAILABLE_Y_ADRESS - MAIN_MAP_PIN_AND_POINTER_HEIGHT;
+  var blockMaxHeightForPin = MAX_AVAILABLE_Y_ADDRESS - MAIN_MAP_PIN_AND_POINTER_HEIGHT;
+  var blockMinHeightForPin = MIN_AVAILABLE_Y_ADDRESS - MAIN_MAP_PIN_AND_POINTER_HEIGHT;
 
   mainPinElement.addEventListener('mousedown', function (evt) {
     evt.preventDefault();

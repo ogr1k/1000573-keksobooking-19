@@ -176,7 +176,7 @@
       resetButtonElement.removeEventListener('click', onResetButtonClicked);
       titleInputElement.removeEventListener('input', onTitleInput);
       priceInputElement.removeEventListener('input', onPriceInput);
-      window.photoAvatarLoad.removeListeners();
+      window.adPhotoUserAvatarLoad.removeListeners();
     };
 
     var removeMessage = function (element) {
@@ -265,7 +265,7 @@
 
     resetButtonElement.addEventListener('click', onResetButtonClicked);
 
-    window.photoAvatarLoad.addListeners();
+    window.adPhotoUserAvatarLoad.addListeners();
     window.filter.addListener();
     formElement.addEventListener('submit', onFormSubmitted);
     roomNumberElement.addEventListener('change', onRoomNumberSelectorChanged);

@@ -11,7 +11,7 @@
   var priceFilterElement = document.querySelector('#housing-price');
   var roomFilterElement = document.querySelector('#housing-rooms');
   var geustFilterElement = document.querySelector('#housing-guests');
-  var wifiInputlement = document.querySelector('#filter-wifi');
+  var wifiFilterlement = document.querySelector('#filter-wifi');
   var dishWashFilterElement = document.querySelector('#filter-dishwasher');
   var parkingFilterElement = document.querySelector('#filter-parking');
   var washerFilterElement = document.querySelector('#filter-washer');
@@ -63,28 +63,18 @@
   };
 
   var setWifiFilter = function (element) {
-    setCheckboxesFilter(element, wifiInputlement, setDishWashFilter);
+    setCheckboxesFilter(element, wifiFilterlement, setDishWashFilter);
   };
 
   var setGuestFilter = function (element) {
-    if (geustFilterElement.value === ANY_TYPE_FILTER_VALUE) {
-      setWifiFilter(element);
-    }
-
-
-    if (Number(geustFilterElement.value) === element.offer.guests) {
+    if (geustFilterElement.value === ANY_TYPE_FILTER_VALUE || (Number(geustFilterElement.value) === element.offer.guests)) {
       setWifiFilter(element);
     }
   };
 
 
   var setRoomFilter = function (element) {
-    if (roomFilterElement.value === ANY_TYPE_FILTER_VALUE) {
-      setGuestFilter(element);
-    }
-
-
-    if (Number(roomFilterElement.value) === element.offer.rooms) {
+    if (roomFilterElement.value === ANY_TYPE_FILTER_VALUE || Number(roomFilterElement.value) === element.offer.rooms) {
       setGuestFilter(element);
     }
   };
