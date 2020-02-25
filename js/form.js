@@ -54,6 +54,7 @@
 
   var main = document.querySelector('main');
 
+
   adressInputElement.value = window.map.startAdress;
 
   var setDisableAttribute = function (elements) {
@@ -154,6 +155,7 @@
       formElement.reset();
 
       mainMapPinElement.style.cssText = 'left:' + START_MAIN_PIN_LEFT_POSITION + 'px; top: ' + START_MAIN_PIN_TOP_POSITION + 'px;';
+      priceInputElement.placeholder = MIN_PRICE_FOR_BUNGALO;
       previewPhotoElement.querySelector('img').hidden = true;
       previewAvatarElement.querySelector('img').src = DEFAULT_FORM_AVATAR_IMAGE;
 
@@ -176,7 +178,7 @@
       resetButtonElement.removeEventListener('click', onResetButtonClicked);
       titleInputElement.removeEventListener('input', onTitleInput);
       priceInputElement.removeEventListener('input', onPriceInput);
-      window.adPhotoUserAvatarLoad.removeListeners();
+      window.adPhotoAndUserAvatarLoad.removeListeners();
     };
 
     var removeMessage = function (element) {
@@ -265,7 +267,7 @@
 
     resetButtonElement.addEventListener('click', onResetButtonClicked);
 
-    window.adPhotoUserAvatarLoad.addListeners();
+    window.adPhotoAndUserAvatarLoad.addListeners();
     window.filter.addListener();
     formElement.addEventListener('submit', onFormSubmitted);
     roomNumberElement.addEventListener('change', onRoomNumberSelectorChanged);
