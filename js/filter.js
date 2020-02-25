@@ -11,7 +11,7 @@
   var priceFilterElement = document.querySelector('#housing-price');
   var roomFilterElement = document.querySelector('#housing-rooms');
   var geustFilterElement = document.querySelector('#housing-guests');
-  var wifiFilterlement = document.querySelector('#filter-wifi');
+  var wifiFilterElement = document.querySelector('#filter-wifi');
   var dishWashFilterElement = document.querySelector('#filter-dishwasher');
   var parkingFilterElement = document.querySelector('#filter-parking');
   var washerFilterElement = document.querySelector('#filter-washer');
@@ -63,7 +63,7 @@
   };
 
   var setWifiFilter = function (element) {
-    setCheckboxesFilter(element, wifiFilterlement, setDishWashFilter);
+    setCheckboxesFilter(element, wifiFilterElement, setDishWashFilter);
   };
 
   var setGuestFilter = function (element) {
