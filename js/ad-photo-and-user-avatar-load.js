@@ -35,7 +35,7 @@
   };
 
 
-  window.adPhotoUserAvatarLoad = {
+  window.adPhotoAndUserAvatarLoad = {
     addListeners: function () {
       avatarChooserElement.addEventListener('change', onAvatarChooserChanged);
       photoChooserElement.addEventListener('change', onPhotoChooserChanged);

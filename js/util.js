@@ -10,9 +10,10 @@
       }
     },
     removePinsElements: function () {
-      for (var i = 0; i < window.pins.mapPinsElements.length; i++) {
-        window.pins.mapPinsElements[i].remove();
+      window.pins.mapPinsElements.forEach(function (currentValue, index) {
+        window.pins.mapPinsElements[index].remove();
       }
+      );
     }
   };
 })();

@@ -84,13 +84,13 @@
     if (priceFilterElement.value === ANY_TYPE_FILTER_VALUE) {
       setRoomFilter(element);
     }
-    if (priceFilterElement.value === LOW_PRICE_FILTER_VALUE && element.offer.price <= 10000) {
+    if (priceFilterElement.value === LOW_PRICE_FILTER_VALUE && element.offer.price < 10000) {
       setRoomFilter(element);
     }
-    if (priceFilterElement.value === HIGH_PRICE_FILTER_VALUE && element.offer.price >= 50000) {
+    if (priceFilterElement.value === HIGH_PRICE_FILTER_VALUE && element.offer.price > 50000) {
       setRoomFilter(element);
     }
-    if (priceFilterElement.value === MIDDLE_PRICE_FILTER_VALUE && element.offer.price < 50000 && element.offer.price > 10000) {
+    if (priceFilterElement.value === MIDDLE_PRICE_FILTER_VALUE && element.offer.price <= 50000 && element.offer.price >= 10000) {
       setRoomFilter(element);
     }
 
